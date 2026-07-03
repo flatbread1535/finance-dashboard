@@ -1,4 +1,4 @@
-package com.flatbread1535.finance_dashboard;
+package com.finance_dashboard;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

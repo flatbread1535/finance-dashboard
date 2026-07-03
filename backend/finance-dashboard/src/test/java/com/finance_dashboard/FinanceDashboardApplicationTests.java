@@ -1,4 +1,4 @@
-package com.flatbread1535.finance_dashboard;
+package com.finance_dashboard;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
