@@ -4,21 +4,25 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.PathVariable;
 
 
 @RestController
 // Indicates which address requests must have to access this controller
 @RequestMapping("/users")
 public class UserController {
-
-    // Marks method as handler method with GET requests.
-    public String requestMethodName(@RequestParam String param) {
-        return new String();
-    }
     
     @GetMapping("/{requestedUserId}")
-    ResponseEntity<String> findByUserId() {
-        return ResponseEntity.ok("{}");
+    ResponseEntity<User> findByUserId(@PathVariable Long requestedUserId) {
+        if (requestedUserId.equals(5L)) {
+            User user = new User(5L, 
+            "adam", 
+            "ajlarson0731@gmail.com", 
+            "abc123", 
+            "937-479-0303");
+            return ResponseEntity.ok(user);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 }
