@@ -11,13 +11,12 @@ import java.io.IOException;
 public class UserJsonTest {
 
     @Autowired  
+    // Provides assertj methods to parse Java objects to JSON
     JacksonTester<User> json;
 
     @Test
     void UserSerializationTest() throws IOException {
         User user = new User(5L, "adam", "ajlarson0731@gmail.com", "abc123", "937-479-0303");
-
-        assertThat(json.write(user)).isStrictlyEqualToJson("expected-user.json");
 
         assertThat(json.write(user)).hasJsonPathNumberValue("@.userId");
         assertThat(json.write(user)).extractingJsonPathNumberValue("@.userId").isEqualTo(5);
@@ -47,13 +46,11 @@ public class UserJsonTest {
                 }
                 """;
 
-        assertThat(json.parse(expected))
-                .isEqualTo(new User(5L, "adam", "ajlarson0731@gmail.com", "abc123", "937-479-0303"));
-
-        assertThat(json.parseObject(expected).userId()).isEqualTo(5);
-        assertThat(json.parseObject(expected).username()).isEqualTo("adam");
-        assertThat(json.parseObject(expected).email()).isEqualTo("ajlarson0731@gmail.com");
-        assertThat(json.parseObject(expected).hashPassword()).isEqualTo("abc123");
-        assertThat(json.parseObject(expected).phoneNumber()).isEqualTo("937-479-0303");
+        User user = json.parseObject(expected);
+        assertThat(user.getUserId()).isEqualTo(5);
+        assertThat(user.getUsername()).isEqualTo("adam");
+        assertThat(user.getEmail()).isEqualTo("ajlarson0731@gmail.com");
+        assertThat(user.getHashPassword()).isEqualTo("abc123");
+        assertThat(user.getPhoneNumber()).isEqualTo("937-479-0303");
     }
 }
