@@ -4,8 +4,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.util.UriComponentsBuilder;
 
+import java.net.URI;
 import java.util.Optional;
 
 // Declares class as controller to Spring
@@ -24,7 +28,7 @@ public class UserController {
     // Maps incoming HTTP GET requests to method
     @GetMapping("/{requestedUserId}")
     // Returns entire HTTP response, data sent back to client is serialized User object
-    ResponseEntity<User> findByUserId(@PathVariable Long requestedUserId) {
+    private ResponseEntity<User> findByUserId(@PathVariable Long requestedUserId) {
         Optional<User> userOptional = userRepository.findById(requestedUserId);
         if (userOptional.isPresent()) {
             // Returns successful request (200 OK)
@@ -33,5 +37,13 @@ public class UserController {
             // Generates empty HTTP response with 404 NOT_FOUND status code
             return ResponseEntity.notFound().build();
         }
+    }
+
+    @PostMapping
+    private ResponseEntity<Void> createUser(@RequestBody User newUserRequest, UriComponentsBuilder ucb) {
+        User savedUser = userRepository.save(newUserRequest);
+        URI locationOfNewUser = ucb.path("users/{userId}")
+                .buildAndExpand(savedUser.getUserId()).toUri();
+        return ResponseEntity.created(locationOfNewUser).build();
     }
 }
