@@ -4,9 +4,12 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import tools.jackson.databind.json.JsonMapper;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
@@ -20,21 +23,39 @@ public class UserControllerTest {
     // Simulates HTTP requests without starting a real server
     private MockMvc mockMvc;
 
+    @Autowired
+    private JsonMapper jsonMapper;
+
     @Test
-    void shouldReturnAUserWhenDataIsSaved() throws Exception {
+    void shouldReturnUserWhenDataIsSavedTest() throws Exception {
         mockMvc.perform(get("/users/5"))
-        .andExpect(status().isOk())
-        .andExpect(jsonPath("$.userId").value(5))
-        .andExpect(jsonPath("$.username").value("adam"))
-        .andExpect(jsonPath("$.email").value("ajlarson0731@gmail.com"))
-        .andExpect(jsonPath("$.hashPassword").value("abc123"))
-        .andExpect(jsonPath("$.phoneNumber").value("937-479-0303"))
-        .andExpect(jsonPath("$.userId").isNotEmpty());
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.userId").value(5))
+                .andExpect(jsonPath("$.username").value("adam"))
+                .andExpect(jsonPath("$.email").value("ajlarson0731@gmail.com"))
+                .andExpect(jsonPath("$.hashPassword").value("abc123"))
+                .andExpect(jsonPath("$.phoneNumber").value("937-479-0303"))
+                .andExpect(jsonPath("$.userId").isNotEmpty());
     }
 
     @Test
-    void shouldNotReturnAUserWithAnUnknownId() throws Exception {
+    void shouldNotReturnUserWithUnknownIdTest() throws Exception {
         mockMvc.perform(get("/users/1000"))
-        .andExpect(status().isNotFound());
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    void createNewUserTest() throws Exception {
+        User newUser = new User(5L, "adam", "ajlarson0731@gmail.com", "abc123", "937-479-0303");
+
+        mockMvc.perform(post("/users")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(jsonMapper.writeValueAsString(newUser)))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.userId").value(5))
+                .andExpect(jsonPath("$.username").value("adam"))
+                .andExpect(jsonPath("$.email").value("ajlarson0731@gmail.com"))
+                .andExpect(jsonPath("$.hashPassword").value("abc123"))
+                .andExpect(jsonPath("$.phoneNumber").value("937-479-0303"));
     }
 }
