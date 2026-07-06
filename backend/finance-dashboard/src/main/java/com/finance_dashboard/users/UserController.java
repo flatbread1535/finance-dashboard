@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -68,6 +69,17 @@ public class UserController {
         existingUser.setPhoneNumber(userUpdate.getPhoneNumber());
 
         userRepository.save(existingUser);
+        return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping("/{requestedUserId}")
+    public ResponseEntity<Void> deleteUser(@PathVariable Long requestedUserId) {
+        
+        if (!userRepository.existsById(requestedUserId)) {
+            return ResponseEntity.notFound().build();
+        }
+
+        userRepository.deleteById(requestedUserId);
         return ResponseEntity.noContent().build();
     }
 }

@@ -9,6 +9,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 import tools.jackson.databind.json.JsonMapper;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
@@ -49,7 +50,7 @@ public class UserControllerTest {
     }
 
     @Test
-    void createNewUserTest() throws Exception {
+    void shouldCreateNewUserTest() throws Exception {
         User newUser = new User(5L, "adam", "ajlarson0731@gmail.com", "abc123", "937-479-0303");
 
         mockMvc.perform(post("/users")
@@ -83,5 +84,17 @@ public class UserControllerTest {
                 .andExpect(jsonPath("$.email").value("newemail@gmail.com"))
                 .andExpect(jsonPath("$.hashPassword").value("new_password"))
                 .andExpect(jsonPath("$.phoneNumber").value("123-456-7890"));
+    }
+
+    @Test
+    void shouldDeleteAnExistingUserTest() throws Exception {
+        mockMvc.perform(delete("/users/5"))
+                .andExpect(status().isNoContent());
+    }
+
+    @Test
+    void shouldNotDeleteUserThatDoesNotExistTest() throws Exception {
+        mockMvc.perform(delete("/users/2"))
+                .andExpect(status().isNotFound());
     }
 }
