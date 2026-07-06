@@ -1,0 +1,23 @@
+[
+  {
+    "userId": 5,
+    "username": "adam",
+    "email": "ajlarson0731@gmail.com",
+    "hashPassword": "abc123",
+    "phoneNumber": "937-479-0303"
+  },
+  {
+    "userId": 6,
+    "username": "chris",
+    "email": "clarson1@woh.rr.com",
+    "hashPassword": "def456",
+    "phoneNumber": "937-416-5220"
+  },
+  {
+    "userId": 7,
+    "username": "amber",
+    "email": "anlarson0702@gmail.com",
+    "hashPassword": "ghi789",
+    "phoneNumber": "937-417-7870"
+  }
+]

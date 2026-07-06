@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
@@ -17,18 +18,18 @@ import java.util.Optional;
 // Indicates which address requests must have to access this controller
 @RequestMapping("/users")
 public class UserController {
-
     private final UserRepository userRepository;
 
-    // Passes database repository into controller 
+    // Passes database repository into controller
     public UserController(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
-    
+
     // Maps incoming HTTP GET requests to method
     @GetMapping("/{requestedUserId}")
-    // Returns entire HTTP response, data sent back to client is serialized User object
-    private ResponseEntity<User> findByUserId(@PathVariable Long requestedUserId) {
+    // Returns entire HTTP response, data sent back to client is serialized User
+    // object
+    public ResponseEntity<User> findByUserId(@PathVariable Long requestedUserId) {
         Optional<User> userOptional = userRepository.findById(requestedUserId);
         if (userOptional.isPresent()) {
             // Returns successful request (200 OK)
@@ -39,11 +40,34 @@ public class UserController {
         }
     }
 
+    @GetMapping()
+    private ResponseEntity<Iterable<User>> findAll() {
+         return ResponseEntity.ok(userRepository.findAll());
+    }
+
     @PostMapping
-    private ResponseEntity<Void> createUser(@RequestBody User newUserRequest, UriComponentsBuilder ucb) {
+    public ResponseEntity<Void> createUser(@RequestBody User newUserRequest, UriComponentsBuilder ucb) {
         User savedUser = userRepository.save(newUserRequest);
-        URI locationOfNewUser = ucb.path("users/{userId}")
+        URI locationOfNewUser = ucb.path("/users/{userId}")
                 .buildAndExpand(savedUser.getUserId()).toUri();
         return ResponseEntity.created(locationOfNewUser).build();
+    }
+
+    @PutMapping("/{requestedUserId}")
+    public ResponseEntity<Void> putUser(@PathVariable Long requestedUserId, @RequestBody User userUpdate) {
+        Optional<User> optionalUser = userRepository.findById(requestedUserId);
+
+        if (optionalUser.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        User existingUser = optionalUser.get();
+        existingUser.setUsername(userUpdate.getUsername());
+        existingUser.setEmail(userUpdate.getEmail());
+        existingUser.setHashPassword(userUpdate.getHashPassword());
+        existingUser.setPhoneNumber(userUpdate.getPhoneNumber());
+
+        userRepository.save(existingUser);
+        return ResponseEntity.noContent().build();
     }
 }

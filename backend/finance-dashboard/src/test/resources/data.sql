@@ -11,3 +11,31 @@ INSERT INTO users (
     'abc123',
     '937-479-0303'
 );
+
+INSERT INTO users (
+    user_id,
+    username,
+    email,
+    hash_password,
+    phone_number
+) VALUES (
+    6,
+    'chris',
+    'clarson1@woh.rr.com',
+    'def456',
+    '937-416-5220'
+);
+
+INSERT INTO users (
+    user_id,
+    username,
+    email,
+    hash_password,
+    phone_number
+) VALUES (
+    7,
+    'amber',
+    'anlarson0702@gmail.com',
+    'ghi789',
+    '937-417-7870'
+);

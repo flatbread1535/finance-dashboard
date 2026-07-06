@@ -1,21 +1,37 @@
 package com.finance_dashboard.users;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.json.JsonTest;
 import org.springframework.boot.test.json.JacksonTester;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import java.io.IOException;
 
 @JsonTest
 public class UserJsonTest {
 
-    @Autowired  
+    @Autowired
     // Provides assertj methods to parse Java objects to JSON
     JacksonTester<User> json;
 
+    @Autowired
+    JacksonTester<User[]> jsonList;
+
+    private User[] users;
+
+    @BeforeEach
+    void setUp() {
+        users = new User[] {
+                new User(5L, "adam", "ajlarson0731@gmail.com", "abc123", "937-479-0303"),
+                new User(6L, "chris", "clarson1@woh.rr.com", "def456", "937-416-5220"),
+                new User(7L, "amber", "anlarson0702@gmail.com", "ghi789", "937-417-7870")
+        };
+    }
+
     @Test
-    void UserSerializationTest() throws IOException {
+    void userSerializationTest() throws IOException {
         User user = new User(5L, "adam", "ajlarson0731@gmail.com", "abc123", "937-479-0303");
 
         assertThat(json.write(user)).hasJsonPathNumberValue("@.userId");
@@ -35,7 +51,13 @@ public class UserJsonTest {
     }
 
     @Test
-    void UserDeserializationTest() throws IOException {
+    void userListSerializationTest() throws IOException {
+        assertThat(jsonList.write(users)).isStrictlyEqualToJson("list.json");
+
+    }
+
+    @Test
+    void userDeserializationTest() throws IOException {
         String expected = """
                 {
                     "userId": 5,
@@ -52,5 +74,46 @@ public class UserJsonTest {
         assertThat(user.getEmail()).isEqualTo("ajlarson0731@gmail.com");
         assertThat(user.getHashPassword()).isEqualTo("abc123");
         assertThat(user.getPhoneNumber()).isEqualTo("937-479-0303");
+    }
+
+    @Test
+    void userListDeserializationTest() throws IOException {
+        String expected = """
+                [
+                  {
+                    "userId": 5,
+                    "username": "adam",
+                    "email": "ajlarson0731@gmail.com",
+                    "hashPassword": "abc123",
+                    "phoneNumber": "937-479-0303"
+                  },
+                  {
+                    "userId": 6,
+                    "username": "chris",
+                    "email": "clarson1@woh.rr.com",
+                    "hashPassword": "def456",
+                    "phoneNumber": "937-416-5220"
+                  },
+                  {
+                    "userId": 7,
+                    "username": "amber",
+                    "email": "anlarson0702@gmail.com",
+                    "hashPassword": "ghi789",
+                    "phoneNumber": "937-417-7870"
+                  }
+                ]
+                """;
+        User[] parsedJson = jsonList.parseObject(expected);
+
+        assertThat(parsedJson).hasSize(3);
+
+        assertThat(parsedJson[0].getUserId()).isEqualTo(5L);
+        assertThat(parsedJson[0].getUsername()).isEqualTo("adam");
+
+        assertThat(parsedJson[1].getEmail()).isEqualTo("clarson1@woh.rr.com");
+        assertThat(parsedJson[1].getHashPassword()).isEqualTo("def456");
+
+        assertThat(parsedJson[2].getUserId()).isEqualTo(7L);
+        assertThat(parsedJson[2].getPhoneNumber()).isEqualTo("937-417-7870");
     }
 }
