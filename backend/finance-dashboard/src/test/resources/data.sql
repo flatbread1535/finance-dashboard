@@ -1,5 +1,5 @@
-INSERT INTO users (
-    user_id,
+INSERT INTO accounts (
+    account_id,
     username,
     email,
     hash_password,
@@ -12,8 +12,8 @@ INSERT INTO users (
     '937-479-0303'
 );
 
-INSERT INTO users (
-    user_id,
+INSERT INTO accounts (
+    account_id,
     username,
     email,
     hash_password,
@@ -26,8 +26,8 @@ INSERT INTO users (
     '937-416-5220'
 );
 
-INSERT INTO users (
-    user_id,
+INSERT INTO accounts (
+    account_id,
     username,
     email,
     hash_password,
