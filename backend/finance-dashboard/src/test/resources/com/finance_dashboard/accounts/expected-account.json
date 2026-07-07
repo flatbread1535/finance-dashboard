@@ -1,7 +1,6 @@
 {
-  "accountId": 5,
   "username": "adam",
   "email": "ajlarson0731@gmail.com",
-  "hashPassword": "abc123",
+  "password": "abc123",
   "phoneNumber": "937-479-0303"
 }

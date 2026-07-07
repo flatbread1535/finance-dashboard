@@ -19,11 +19,11 @@ import java.util.Optional;
 // Indicates which address requests must have to access this controller
 @RequestMapping("/accounts")
 public class AccountController {
-    private final AccountRepository accountRepository;
+    private final AccountService accountService;
 
-    // Passes database repository into controller
-    public AccountController(AccountRepository accountRepository) {
-        this.accountRepository = accountRepository;
+    // Injects Account service into Controller
+    public AccountController(AccountService accountService) {
+        this.accountService = accountService;
     }
 
     // Maps incoming HTTP GET requests to method
@@ -31,7 +31,7 @@ public class AccountController {
     // Returns entire HTTP response, data sent back to client is serialized Account
     // object
     public ResponseEntity<Account> findByAccountId(@PathVariable Long requestedAccountId) {
-        Optional<Account> accountOptional = accountRepository.findById(requestedAccountId);
+        Optional<Account> accountOptional = accountService.getAccountById(requestedAccountId);
         if (accountOptional.isPresent()) {
             // Returns successful request (200 OK)
             return ResponseEntity.ok(accountOptional.get());
@@ -42,15 +42,15 @@ public class AccountController {
     }
 
     @GetMapping()
-    private ResponseEntity<Iterable<Account>> findAll() {
-        return ResponseEntity.ok(accountRepository.findAll());
+    public ResponseEntity<Iterable<Account>> findAll() {
+        return ResponseEntity.ok(accountService.getAllAccounts());
     }
 
     @PostMapping
     // @RequestBody tells SpringBoot to look at body of HTTP request, grab raw JSON,
     // and convert to Java object
-    public ResponseEntity<Void> createAccount(@RequestBody Account newAccountRequest, UriComponentsBuilder ucb) {
-        Account savedAccount = accountRepository.save(newAccountRequest);
+    public ResponseEntity<Void> createAccount(@RequestBody AccountRegistrationRequest newAccountRequest, UriComponentsBuilder ucb) {
+        Account savedAccount = accountService.createAccount(newAccountRequest);
         // Builds account path structure into a Java URI object
         URI locationOfNewAccount = ucb.path("/accounts/{accountId}")
                 .buildAndExpand(savedAccount.getAccountId()).toUri();
@@ -58,30 +58,22 @@ public class AccountController {
     }
 
     @PutMapping("/{requestedAccountId}")
-    public ResponseEntity<Void> putAccount(@PathVariable Long requestedAccountId, @RequestBody Account accountUpdate) {
-        Optional<Account> optionalAccount = accountRepository.findById(requestedAccountId);
-        if (optionalAccount.isEmpty()) {
+    public ResponseEntity<Void> putAccount(@PathVariable Long requestedAccountId, @RequestBody AccountRegistrationRequest accountUpdateRequest) {
+        try {
+            accountService.updateAccount(requestedAccountId, accountUpdateRequest);
+            return ResponseEntity.noContent().build();
+        } catch (AccountNotFoundException e) {
             return ResponseEntity.notFound().build();
         }
-
-        Account existingAccount = optionalAccount.get();
-        existingAccount.setUsername(accountUpdate.getUsername());
-        existingAccount.setEmail(accountUpdate.getEmail());
-        existingAccount.setHashPassword(accountUpdate.getHashPassword());
-        existingAccount.setPhoneNumber(accountUpdate.getPhoneNumber());
-
-        accountRepository.save(existingAccount);
-        return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping("/{requestedAccountId}")
     public ResponseEntity<Void> deleteAccount(@PathVariable Long requestedAccountId) {
-
-        if (!accountRepository.existsById(requestedAccountId)) {
+        try {
+            accountService.deleteAccount(requestedAccountId);
+            return ResponseEntity.noContent().build();
+        } catch (AccountNotFoundException e) {
             return ResponseEntity.notFound().build();
         }
-
-        accountRepository.deleteById(requestedAccountId);
-        return ResponseEntity.noContent().build();
     }
 }
