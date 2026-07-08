@@ -5,7 +5,7 @@ CREATE TABLE transactions(
     amount DECIMAL(15, 2) NOT NULL,
     currency VARCHAR(3) NOT NULL,
     status VARCHAR(20) NOT NULL,
-    category VARCHAR(50),
+    category VARCHAR(50) NOT NULL,
     CONSTRAINT FK_transactions_accounts 
         FOREIGN KEY (account_id) 
         REFERENCES accounts(account_id)

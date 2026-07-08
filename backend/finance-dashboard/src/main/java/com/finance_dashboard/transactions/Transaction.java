@@ -29,7 +29,7 @@ public class Transaction {
     @Column(name = "status", nullable = false)
     private String status;
 
-    @Column(name = "category", nullable = true)
+    @Column(name = "category", nullable = false)
     private String category;
 
     protected Transaction() {
