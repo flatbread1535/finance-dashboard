@@ -32,23 +32,79 @@ public class Transaction {
     @Column(name = "category", nullable = true)
     private String category;
 
-    protected Transaction() {}
-    
+    protected Transaction() {
+    }
+
     public Transaction(
-        Long transactionId,
-        LocalDateTime timeCreated,
-        Account account,
-        BigDecimal amount,
-        String currency,
-        String status,
-        String category
-    ) {
+            Long transactionId,
+            LocalDateTime timeCreated,
+            Account account,
+            BigDecimal amount,
+            String currency,
+            String status,
+            String category) {
         this.transactionId = transactionId;
         this.timeCreated = timeCreated;
         this.account = account;
         this.amount = amount;
         this.currency = currency;
         this.status = status;
+        this.category = category;
+    }
+
+    public Long getTransactionId() {
+        return transactionId;
+    }
+
+    public void setTransactionId(Long transactionId) {
+        this.transactionId = transactionId;
+    }
+
+    public LocalDateTime getTimeCreated() {
+        return timeCreated;
+    }
+
+    public void setTimeCreated(LocalDateTime timeCreated) {
+        this.timeCreated = timeCreated;
+    }
+
+    public Account getAccount() {
+        return account;
+    }
+
+    public void setAccount(Account account) {
+        this.account = account;
+    }
+
+    public BigDecimal getAmount() {
+        return amount;
+    }
+
+    public void setAmount(BigDecimal amount) {
+        this.amount = amount;
+    }
+
+    public String getCurrency() {
+        return currency;
+    }
+
+    public void setCurrency(String currency) {
+        this.currency = currency;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
         this.category = category;
     }
 }
