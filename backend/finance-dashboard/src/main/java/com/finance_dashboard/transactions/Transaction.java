@@ -32,8 +32,7 @@ public class Transaction {
     @Column(name = "category", nullable = false)
     private String category;
 
-    protected Transaction() {
-    }
+    protected Transaction() {}
 
     public Transaction(
             Long transactionId,
