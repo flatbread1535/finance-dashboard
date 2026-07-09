@@ -37,7 +37,7 @@ public class TransactionService {
                 .orElseThrow(() -> new AccountNotFoundException("Could not find account."));
 
         Transaction newTransaction = new Transaction(
-            null,
+            null, 
             LocalDateTime.now(),
             account,
             request.amount(),
