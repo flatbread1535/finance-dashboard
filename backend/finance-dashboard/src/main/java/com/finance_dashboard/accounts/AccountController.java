@@ -10,9 +10,9 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.util.UriComponentsBuilder;
+import jakarta.validation.Valid;
 
 import java.net.URI;
-import java.util.Optional;
 
 // Declares class as controller to Spring
 @RestController
@@ -27,53 +27,37 @@ public class AccountController {
     }
 
     // Maps incoming HTTP GET requests to method
-    @GetMapping("/{requestedAccountId}")
+    @GetMapping("/{accountId}")
     // Returns entire HTTP response, data sent back to client is serialized Account
     // object
-    public ResponseEntity<Account> findByAccountId(@PathVariable Long requestedAccountId) {
-        Optional<Account> accountOptional = accountService.getAccountById(requestedAccountId);
-        if (accountOptional.isPresent()) {
-            // Returns successful request (200 OK)
-            return ResponseEntity.ok(accountOptional.get());
-        } else {
-            // Generates empty HTTP response with 404 NOT_FOUND status code
-            return ResponseEntity.notFound().build();
-        }
-    }
-
-    @GetMapping()
-    public ResponseEntity<Iterable<Account>> findAll() {
-        return ResponseEntity.ok(accountService.getAllAccounts());
+    public ResponseEntity<AccountResponseDTO> findByAccountId(@PathVariable Long accountId) {
+        return accountService.getAccountById(accountId)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping
     // @RequestBody tells SpringBoot to look at body of HTTP request, grab raw JSON,
     // and convert to Java object
-    public ResponseEntity<Void> createAccount(@RequestBody AccountRegistrationRequest newAccountRequest, UriComponentsBuilder ucb) {
-        Account savedAccount = accountService.createAccount(newAccountRequest);
+    public ResponseEntity<Void> createAccount(@RequestBody @Valid AccountRequestDTO accountRequest,
+            UriComponentsBuilder ucb) {
+        Account savedAccount = accountService.createAccount(accountRequest);
         // Builds account path structure into a Java URI object
         URI locationOfNewAccount = ucb.path("/accounts/{accountId}")
                 .buildAndExpand(savedAccount.getAccountId()).toUri();
         return ResponseEntity.created(locationOfNewAccount).build();
     }
 
-    @PutMapping("/{requestedAccountId}")
-    public ResponseEntity<Void> putAccount(@PathVariable Long requestedAccountId, @RequestBody AccountRegistrationRequest accountUpdateRequest) {
-        try {
-            accountService.updateAccount(requestedAccountId, accountUpdateRequest);
-            return ResponseEntity.noContent().build();
-        } catch (AccountNotFoundException e) {
-            return ResponseEntity.notFound().build();
-        }
+    @PutMapping("/{accountId}")
+    public ResponseEntity<Void> putAccount(@PathVariable Long accountId,
+            @RequestBody @Valid AccountRequestDTO updateRequest) {
+        accountService.updateAccount(accountId, updateRequest);
+        return ResponseEntity.noContent().build();
     }
 
-    @DeleteMapping("/{requestedAccountId}")
-    public ResponseEntity<Void> deleteAccount(@PathVariable Long requestedAccountId) {
-        try {
-            accountService.deleteAccount(requestedAccountId);
-            return ResponseEntity.noContent().build();
-        } catch (AccountNotFoundException e) {
-            return ResponseEntity.notFound().build();
-        }
+    @DeleteMapping("/{accountId}")
+    public ResponseEntity<Void> deleteAccount(@PathVariable Long accountId) {
+        accountService.deleteAccount(accountId);
+        return ResponseEntity.noContent().build();
     }
 }

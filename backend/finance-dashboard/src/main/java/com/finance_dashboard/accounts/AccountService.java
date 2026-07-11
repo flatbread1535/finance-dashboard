@@ -1,6 +1,7 @@
 package com.finance_dashboard.accounts;
 
 import org.springframework.stereotype.Service;
+import com.finance_dashboard.ResourceNotFoundException;
 import jakarta.transaction.Transactional;
 import java.util.Optional;
 
@@ -12,61 +13,62 @@ public class AccountService {
         this.accountRepository = accountRepository;
     }
 
-    public Optional<Account> getAccountById(Long accountId) {
-        return accountRepository.findById(accountId);
-    }
-
-    public Iterable<Account> getAllAccounts() {
-        return accountRepository.findAll();
+    public Optional<AccountResponseDTO> getAccountById(Long accountId) {
+        return accountRepository.findById(accountId)
+                .map(account -> new AccountResponseDTO(
+                    account.getAccountId(),
+                    account.getUsername(),
+                    account.getEmail(),
+                    account.getPhoneNumber()
+                ));
     }
 
     @Transactional
-    public Account createAccount(AccountRegistrationRequest request) {
-        if (accountRepository.existsByEmail(request.getEmail())) {
+    public Account createAccount(AccountRequestDTO request) {
+        if (accountRepository.existsByEmail(request.email())) {
             throw new IllegalArgumentException("This email is already taken.");
         }
 
-        if (accountRepository.existsByUsername(request.getUsername())) {
+        if (accountRepository.existsByUsername(request.username())) {
             throw new IllegalArgumentException("Username already exists");
         }
 
-        if (accountRepository.existsByPhoneNumber(request.getPhoneNumber())) {
+        if (accountRepository.existsByPhoneNumber(request.phoneNumber())) {
             throw new IllegalArgumentException("Phone number already exists");
         }
 
-        // TODO: Do something to hash password
-        String hashPassword = request.getPassword();
+        // TODO: Do something to hash password with bcrypt
+        String hashPassword = request.password();
 
         Account newAccount = new Account(
                 null,
-                request.getUsername(),
-                request.getEmail(),
+                request.username(),
+                request.email(),
                 hashPassword,
-                request.getPhoneNumber());
+                request.phoneNumber());
 
         return accountRepository.save(newAccount);
     }
 
     @Transactional
-    public void updateAccount(Long accountId, AccountRegistrationRequest updateRequest) {
+    public void updateAccount(Long accountId, AccountRequestDTO updateRequest) {
         Account account = accountRepository.findById(accountId)
-                .orElseThrow(() -> new AccountNotFoundException("Could not find account."));
+                .orElseThrow(() -> new ResourceNotFoundException("Could not find account."));
 
-        // TODO: Add more advanced logic to update the password or other information
-        account.setUsername(updateRequest.getUsername());
-        account.setEmail(updateRequest.getEmail());
-        account.setPhoneNumber(updateRequest.getPhoneNumber());
-        account.setHashPassword(updateRequest.getPassword());
+        // TODO: Add more advanced logic to update information, particularly prevent duplicates
+        account.setUsername(updateRequest.username());
+        account.setEmail(updateRequest.email());
+        account.setPhoneNumber(updateRequest.phoneNumber());
+        account.setHashPassword(updateRequest.password());
 
         accountRepository.save(account);
     }
 
     @Transactional
     public void deleteAccount(Long accountId) {
-        if (!accountRepository.existsById(accountId)) {
-            throw new AccountNotFoundException("Could not find account.");
-        }
+        Account account = accountRepository.findById(accountId)
+                .orElseThrow(() -> new ResourceNotFoundException("Could not find account."));
 
-        accountRepository.deleteById(accountId);
+        accountRepository.delete(account);
     }
 }
