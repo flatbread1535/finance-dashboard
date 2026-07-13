@@ -1,6 +1,8 @@
 package com.finance_dashboard.accounts;
 
 import org.springframework.stereotype.Service;
+import org.springframework.security.crypto.password.PasswordEncoder;
+
 import com.finance_dashboard.ResourceNotFoundException;
 import jakarta.transaction.Transactional;
 import java.util.Optional;
@@ -8,9 +10,11 @@ import java.util.Optional;
 @Service
 public class AccountService {
     private final AccountRepository accountRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public AccountService(AccountRepository accountRepository) {
+    public AccountService(AccountRepository accountRepository, PasswordEncoder passwordEncoder) {
         this.accountRepository = accountRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public Optional<AccountResponseDTO> getAccountById(Long accountId) {
@@ -37,8 +41,7 @@ public class AccountService {
             throw new IllegalArgumentException("Phone number already exists");
         }
 
-        // TODO: Do something to hash password with bcrypt
-        String hashPassword = request.password();
+        String hashPassword = passwordEncoder.encode(request.password());
 
         Account newAccount = new Account(
                 null,
@@ -59,7 +62,7 @@ public class AccountService {
         account.setUsername(updateRequest.username());
         account.setEmail(updateRequest.email());
         account.setPhoneNumber(updateRequest.phoneNumber());
-        account.setHashPassword(updateRequest.password());
+        account.setHashPassword(passwordEncoder.encode(updateRequest.password()));
 
         accountRepository.save(account);
     }
