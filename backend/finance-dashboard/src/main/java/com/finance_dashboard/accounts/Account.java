@@ -1,5 +1,7 @@
 package com.finance_dashboard.accounts;
 
+import java.time.LocalDateTime;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -11,32 +13,58 @@ public class Account {
     @Column(name = "account_id")
     private Long accountId;
 
+    @Enumerated(value = EnumType.STRING)
+    @Column(name = "role", nullable = false, length = 20)
+    private Role role = Role.USER;
+
     @Column(name = "username", nullable = false, unique = true, length = 20)
     private String username;
 
-    @Column(name = "email", nullable =false, unique = true, length = 100)
+    @Column(name = "email", nullable = false, unique = true, length = 100)
     private String email;
-
-    @Column(name = "hash_password", nullable = false, length = 250)
-    private String hashPassword;
 
     @Column(name = "phone_number", nullable = false, unique = true, length = 20)
     private String phoneNumber;
 
-    protected Account() {}
+    @Column(name = "profile_picture_url", length = 500)
+    private String profilePictureUrl;
+
+    @Column(name = "dark_mode_enabled", nullable = false)
+    private Boolean darkModeEnabled = false;
+
+    @Column(name = "time_created", nullable = false)
+    private LocalDateTime timeCreated;
+
+    @Column(name = "last_login_time")
+    private LocalDateTime lastLoginTime;
+
+    @Column(name = "hash_password", nullable = false, length = 250)
+    private String hashPassword;
+
+    protected Account() {
+    }
 
     public Account(
-        Long accountId,
-        String username,
-        String email,
-        String hashPassword,
-        String phoneNumber
-    ) {
+            Long accountId,
+            Role role,
+            String username,
+            String email,
+            String phoneNumber,
+            String profilePictureUrl,
+            Boolean darkModeEnabled,
+            LocalDateTime timeCreated,
+            LocalDateTime lastLoginTime,
+            String hashPassword) {
         this.accountId = accountId;
+        this.role = role != null ? role : Role.USER;
         this.username = username;
         this.email = email;
-        this.hashPassword = hashPassword;
         this.phoneNumber = phoneNumber;
+        this.profilePictureUrl = profilePictureUrl;
+        this.darkModeEnabled = darkModeEnabled != null ? darkModeEnabled : false;
+        this.timeCreated = timeCreated;
+        this.lastLoginTime = lastLoginTime;
+        this.hashPassword = hashPassword;
     }
 
     public Long getAccountId() {
@@ -45,6 +73,14 @@ public class Account {
 
     public void setAccountId(Long accountId) {
         this.accountId = accountId;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
     }
 
     public String getUsername() {
@@ -63,19 +99,51 @@ public class Account {
         this.email = email;
     }
 
-    public String getHashPassword() {
-        return hashPassword;
-    }
-
-    public void setHashPassword(String hashPassword) {
-        this.hashPassword = hashPassword;
-    }
-
     public String getPhoneNumber() {
         return phoneNumber;
     }
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
+    }
+
+    public String getProfilePictureUrl() {
+        return profilePictureUrl;
+    }
+
+    public void setProfilePictureUrl(String profilePictureUrl) {
+        this.profilePictureUrl = profilePictureUrl;
+    }
+
+    public String getHashPassword() {
+        return hashPassword;
+    }
+
+    public Boolean getDarkModeEnabled() {
+        return darkModeEnabled;
+    }
+
+    public void setDarkModeEnabled(Boolean darkModeEnabled) {
+        this.darkModeEnabled = darkModeEnabled;
+    }
+
+    public LocalDateTime getTimeCreated() {
+        return timeCreated;
+    }
+
+    public void setTimeCreated(LocalDateTime timeCreated) {
+        this.timeCreated = timeCreated;
+    }
+
+    public LocalDateTime getLastLoginTime() {
+        return lastLoginTime;
+    }
+
+    public void setLastLoginTime(LocalDateTime lastLoginTime) {
+        this.lastLoginTime = lastLoginTime;
+    }
+
+    public void setHashPassword(String hashPassword) {
+        this.hashPassword = hashPassword;
     }
 }
