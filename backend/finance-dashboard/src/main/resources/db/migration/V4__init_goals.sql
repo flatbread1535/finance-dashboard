@@ -7,9 +7,9 @@ CREATE TABLE goals(
     time_created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     target_date DATE NOT NULL,
     priority_level VARCHAR(20) NOT NULL,
-    status VARCHAR(20) NOT NULL
-    description VARCHAR(250)
+    status VARCHAR(20) NOT NULL,
+    description VARCHAR(250),
     CONSTRAINT FK_goals_accounts 
         FOREIGN KEY (account_id) 
-        REFERENCES accounts(account_id),
+        REFERENCES accounts(account_id)
 );
