@@ -5,13 +5,13 @@ CREATE TABLE budgets(
     category VARCHAR(50) NOT NULL,
     target_amount DECIMAL(15, 2) NOT NULL CHECK (target_amount >= 0),
     current_spending DECIMAL(15, 2) NOT NULL DEFAULT 0.00 CHECK (current_spending >= 0),
-    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    time_created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     start_date DATE NOT NULL,
     end_date DATE NOT NULL,
     is_threshold_alert BOOLEAN NOT NULL DEFAULT FALSE,
-    threshold_alert_value DECIMAL(15, 2) NOT NULL CHECK (threshold_alert_value >= 0)
-    CONSTRAINT FK_budgets_accounts 
-        FOREIGN KEY (account_id) 
+    threshold_alert_value DECIMAL(15, 2) NOT NULL CHECK (threshold_alert_value >= 0),
+    CONSTRAINT FK_budgets_accounts
+        FOREIGN KEY (account_id)
         REFERENCES accounts(account_id),
     CONSTRAINT check_budget_dates
         CHECK (end_date >= start_date)
