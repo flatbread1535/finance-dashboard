@@ -5,7 +5,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import com.finance_dashboard.ResourceNotFoundException;
 import jakarta.transaction.Transactional;
 import java.time.LocalDateTime;
-import java.util.Optional;
 
 @Service
 public class AccountService {
@@ -17,19 +16,20 @@ public class AccountService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public Optional<AccountResponseDTO> getAccountById(Long accountId) {
-        return accountRepository.findById(accountId)
-                // Transforms optional contents to AccountResponseDTO if an account is found
-                .map(account -> new AccountResponseDTO(
-                        account.getAccountId(),
-                        account.getRole(),
-                        account.getUsername(),
-                        account.getEmail(),
-                        account.getPhoneNumber(),
-                        account.getProfilePictureUrl(),
-                        account.getDarkModeEnabled(),
-                        account.getTimeCreated(),
-                        account.getLastLoginTime()));
+    public AccountResponseDTO getAccountByUsername(String username) {
+        Account account = accountRepository.findByUsername(username)
+                .orElseThrow(() -> new ResourceNotFoundException("Could not find account."));
+
+        return new AccountResponseDTO(
+                account.getAccountId(),
+                account.getRole(),
+                account.getUsername(),
+                account.getEmail(),
+                account.getPhoneNumber(),
+                account.getProfilePictureUrl(),
+                account.getDarkModeEnabled(),
+                account.getTimeCreated(),
+                account.getLastLoginTime());
     }
 
     @Transactional
@@ -68,8 +68,8 @@ public class AccountService {
     }
 
     @Transactional
-    public void updateAccount(Long accountId, AccountRequestDTO updateRequest) {
-        Account account = accountRepository.findById(accountId)
+    public void updateAccount(String username, AccountRequestDTO updateRequest) {
+        Account account = accountRepository.findByUsername(username)
                 .orElseThrow(() -> new ResourceNotFoundException("Could not find account."));
 
         // TODO: Add more advanced logic to update information, particularly prevent
@@ -83,8 +83,8 @@ public class AccountService {
     }
 
     @Transactional
-    public void deleteAccount(Long accountId) {
-        Account account = accountRepository.findById(accountId)
+    public void deleteAccount(String username) {
+        Account account = accountRepository.findByUsername(username)
                 .orElseThrow(() -> new ResourceNotFoundException("Could not find account."));
 
         accountRepository.delete(account);
