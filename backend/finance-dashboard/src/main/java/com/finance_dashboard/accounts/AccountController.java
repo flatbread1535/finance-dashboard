@@ -1,11 +1,11 @@
 package com.finance_dashboard.accounts;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -26,14 +26,10 @@ public class AccountController {
         this.accountService = accountService;
     }
 
-    // Maps incoming HTTP GET requests to method
-    @GetMapping("/{accountId}")
-    // Returns entire HTTP response, data sent back to client is serialized Account
-    // object
-    public ResponseEntity<AccountResponseDTO> findByAccountId(@PathVariable Long accountId) {
-        return accountService.getAccountById(accountId)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    @GetMapping("/me")
+    public ResponseEntity<AccountResponseDTO> getAccount(Authentication authentication) {
+        String username = authentication.getName();
+        return ResponseEntity.ok(accountService.getAccountByUsername(username));
     }
 
     @PostMapping
@@ -48,16 +44,18 @@ public class AccountController {
         return ResponseEntity.created(locationOfNewAccount).build();
     }
 
-    @PutMapping("/{accountId}")
-    public ResponseEntity<Void> putAccount(@PathVariable Long accountId,
+    @PutMapping("/me")
+    public ResponseEntity<Void> putAccount(Authentication authentication,
             @RequestBody @Valid AccountRequestDTO updateRequest) {
-        accountService.updateAccount(accountId, updateRequest);
+        String username = authentication.getName();
+        accountService.updateAccount(username, updateRequest);
         return ResponseEntity.noContent().build();
     }
 
-    @DeleteMapping("/{accountId}")
-    public ResponseEntity<Void> deleteAccount(@PathVariable Long accountId) {
-        accountService.deleteAccount(accountId);
+    @DeleteMapping("/me")
+    public ResponseEntity<Void> deleteAccount(Authentication authentication) {
+        String username = authentication.getName();
+        accountService.deleteAccount(username);
         return ResponseEntity.noContent().build();
     }
 }
