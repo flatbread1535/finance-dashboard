@@ -27,7 +27,7 @@ public class AccountController {
     }
 
     @GetMapping("/me")
-    public ResponseEntity<AccountResponseDTO> getAccount(Authentication authentication) {
+    public ResponseEntity<AccountResponse> getAccount(Authentication authentication) {
         String username = authentication.getName();
         return ResponseEntity.ok(accountService.getAccountByUsername(username));
     }
@@ -35,7 +35,7 @@ public class AccountController {
     @PostMapping
     // @RequestBody tells SpringBoot to look at body of HTTP request, grab raw JSON,
     // and convert to Java object
-    public ResponseEntity<Void> createAccount(@RequestBody @Valid AccountRequestDTO accountRequest,
+    public ResponseEntity<Void> createAccount(@RequestBody @Valid AccountCreateRequest accountRequest,
             UriComponentsBuilder ucb) {
         Account savedAccount = accountService.createAccount(accountRequest);
         // Builds account path structure into a Java URI object
@@ -45,10 +45,17 @@ public class AccountController {
     }
 
     @PutMapping("/me")
-    public ResponseEntity<Void> putAccount(Authentication authentication,
-            @RequestBody @Valid AccountRequestDTO updateRequest) {
+    public ResponseEntity<Void> updateAccount(Authentication authentication,
+            @RequestBody @Valid AccountUpdateRequest updateRequest) {
         String username = authentication.getName();
         accountService.updateAccount(username, updateRequest);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/me/password")
+    public ResponseEntity<Void> updatePassword(Authentication authentication,
+            @RequestBody @Valid PasswordChangeRequest passwordChangeRequest) {
+        accountService.updatePassword(authentication.getName(), passwordChangeRequest);
         return ResponseEntity.noContent().build();
     }
 
