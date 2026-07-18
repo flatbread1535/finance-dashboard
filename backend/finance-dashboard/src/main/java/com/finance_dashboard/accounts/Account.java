@@ -1,6 +1,8 @@
 package com.finance_dashboard.accounts;
 
 import java.time.LocalDateTime;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.validator.constraints.URL;
 
 import jakarta.persistence.*;
 
@@ -26,12 +28,14 @@ public class Account {
     @Column(name = "phone_number", nullable = false, unique = true, length = 20)
     private String phoneNumber;
 
+    @URL(message = "Must be a valid URL.")
     @Column(name = "profile_picture_url", length = 500)
     private String profilePictureUrl;
 
     @Column(name = "dark_mode_enabled", nullable = false)
     private Boolean darkModeEnabled = false;
 
+    @CreationTimestamp
     @Column(name = "time_created", nullable = false)
     private LocalDateTime timeCreated;
 
