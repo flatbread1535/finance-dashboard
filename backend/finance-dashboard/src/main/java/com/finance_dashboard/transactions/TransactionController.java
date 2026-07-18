@@ -1,6 +1,7 @@
 package com.finance_dashboard.transactions;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -9,9 +10,9 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
-
+import jakarta.validation.Valid;
 import java.net.URI;
-import java.util.Optional;
+import java.util.List;
 
 @RestController
 @RequestMapping("/transactions")
@@ -24,44 +25,32 @@ public class TransactionController {
     }
 
     @GetMapping("/{transactionId}")
-    public ResponseEntity<Transaction> findById(@PathVariable Long transactionId) {
-        Optional<Transaction> transactionOptional = transactionService.getTransactionById(transactionId);
-        if (transactionOptional.isPresent()) {
-            return ResponseEntity.ok(transactionOptional.get());
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+    public ResponseEntity<TransactionResponse> getTransaction(@PathVariable Long transactionId, Authentication authentication) {
+        return ResponseEntity.ok(transactionService.getTransaction(transactionId, authentication.getName()));
     }
 
     @GetMapping
-    public ResponseEntity<Iterable<Transaction>> findAll() {
-        return ResponseEntity.ok(transactionService.getAllTransactions());
+    public ResponseEntity<List<TransactionResponse>> getAllTransactions(Authentication authentication) {
+        return ResponseEntity.ok(transactionService.getTransactions(authentication.getName()));
     }
 
     @PostMapping
-    public ResponseEntity<Void> createTransaction(@RequestBody TransactionRequest request) {
-        Transaction requestedTransaction = transactionService.createTransaction(request);
+    public ResponseEntity<Void> createTransaction(Authentication authentication, @RequestBody @Valid TransactionRequest request) {
+        String username = authentication.getName();
+        Transaction requestedTransaction = transactionService.createTransaction(username, request);
         URI location = URI.create("/transactions/" + requestedTransaction.getTransactionId());
         return ResponseEntity.created(location).build();
     }
 
     @PutMapping("/{transactionId}")
-    public ResponseEntity<Void> putTransaction(@PathVariable Long transactionId, @RequestBody TransactionRequest updateRequest) {
-        try {
-            transactionService.updateTransaction(transactionId, updateRequest);
-            return ResponseEntity.noContent().build();
-        } catch (TransactionNotFoundException e) {
-            return ResponseEntity.notFound().build();
-        }
+    public ResponseEntity<Void> updateTransaction(@PathVariable Long transactionId, Authentication authentication, @RequestBody @Valid TransactionRequest updateRequest) {
+        transactionService.updateTransaction(transactionId, authentication.getName(), updateRequest);
+        return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping("/{transactionId}")
-    public ResponseEntity<Void> deleteTransaction(@PathVariable Long transactionId) {
-        try {
-            transactionService.deleteTransaction(transactionId);
+    public ResponseEntity<Void> deleteTransaction(@PathVariable Long transactionId, Authentication authentication) {
+            transactionService.deleteTransaction(transactionId, authentication.getName());
             return ResponseEntity.noContent().build();
-        } catch (TransactionNotFoundException e) {
-            return ResponseEntity.notFound().build();
-        }
     }
 }

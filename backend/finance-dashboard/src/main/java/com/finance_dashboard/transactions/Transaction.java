@@ -4,6 +4,7 @@ import com.finance_dashboard.accounts.Account;
 import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import org.hibernate.annotations.CreationTimestamp;
 
 @Entity
 @Table(name = "transactions")
@@ -13,6 +14,7 @@ public class Transaction {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long transactionId;
 
+    @CreationTimestamp
     @Column(name = "time_created", nullable = false)
     private LocalDateTime timeCreated;
 
@@ -23,13 +25,15 @@ public class Transaction {
     @Column(name = "amount", nullable = false, precision = 15, scale = 2)
     private BigDecimal amount;
 
-    @Column(name = "currency", nullable = false)
-    private String currency;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "currency", nullable = false, length = 3)
+    private Currency currency;
 
-    @Column(name = "status", nullable = false)
-    private String status;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status", nullable = false, length = 20)
+    private Status status;
 
-    @Column(name = "category", nullable = false)
+    @Column(name = "category", nullable = false, length = 50)
     private String category;
 
     protected Transaction() {}
@@ -39,8 +43,8 @@ public class Transaction {
             LocalDateTime timeCreated,
             Account account,
             BigDecimal amount,
-            String currency,
-            String status,
+            Currency currency,
+            Status status,
             String category) {
         this.transactionId = transactionId;
         this.timeCreated = timeCreated;
@@ -83,19 +87,19 @@ public class Transaction {
         this.amount = amount;
     }
 
-    public String getCurrency() {
+    public Currency getCurrency() {
         return currency;
     }
 
-    public void setCurrency(String currency) {
+    public void setCurrency(Currency currency) {
         this.currency = currency;
     }
 
-    public String getStatus() {
+    public Status getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(Status status) {
         this.status = status;
     }
 
