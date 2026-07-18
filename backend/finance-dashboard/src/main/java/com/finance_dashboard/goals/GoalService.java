@@ -1,13 +1,11 @@
 package com.finance_dashboard.goals;
 
+import com.finance_dashboard.ResourceNotFoundException;
 import com.finance_dashboard.accounts.Account;
 import com.finance_dashboard.accounts.AccountRepository;
-import com.finance_dashboard.accounts.AccountNotFoundException;
 import org.springframework.stereotype.Service;
 import jakarta.transaction.Transactional;
-
-import java.time.LocalDateTime;
-import java.util.Optional;
+import java.util.List;
 
 @Service
 public class GoalService {
@@ -23,19 +21,41 @@ public class GoalService {
         this.accountRepository = accountRepository;
     }
 
-    public Optional<Goal> getGoalById(Long goalId) {
-        return goalRepository.findById(goalId);
+    public GoalResponse getGoal(Long goalId, String username) {
+        Goal goal = goalRepository.findByGoalIdAndAccountUsername(goalId, username)
+                .orElseThrow(() -> new ResourceNotFoundException("Could not find goal."));
+        
+        return new GoalResponse(
+            goal.getGoalId(),
+            goal.getName(),
+            goal.getTargetAmount(),
+            goal.getCurrentAmount(),
+            goal.getTargetDate(),
+            goal.getPriorityLevel(),
+            goal.getStatus(),
+            goal.getDescription());
     }
 
-    public Iterable<Goal> getAllGoals() {
-        return goalRepository.findAll();
+    public List<GoalResponse> getGoals(String username) {
+        return goalRepository.findByAccountUsername(username)
+                .stream()
+                .map(goal -> new GoalResponse(
+                        goal.getGoalId(),
+                        goal.getName(),
+                        goal.getTargetAmount(),
+                        goal.getCurrentAmount(),
+                        goal.getTargetDate(),
+                        goal.getPriorityLevel(),
+                        goal.getStatus(),
+                        goal.getDescription()))
+                .toList();
     }
 
     @Transactional
-    public Goal createGoal(GoalRequest request) {
+    public Goal createGoal(String username, GoalRequest request) {
 
-        Account account = accountRepository.findById(request.accountId())
-                .orElseThrow(() -> new AccountNotFoundException("Could not find account."));
+        Account account = accountRepository.findByUsername(username)
+                .orElseThrow(() -> new ResourceNotFoundException("Could not find account."));
 
         Goal newGoal = new Goal(
             null,
@@ -43,7 +63,7 @@ public class GoalService {
             request.name(),
             request.targetAmount(),
             request.currentAmount(),
-            LocalDateTime.now(),
+            null,
             request.targetDate(),
             request.priorityLevel(),
             request.status(),
@@ -54,9 +74,9 @@ public class GoalService {
     }
 
     @Transactional
-    public void updateGoal(Long goalId, GoalRequest updateRequest) {
-        Goal goal = goalRepository.findById(goalId)
-                .orElseThrow(() -> new GoalNotFoundException("Could not find goal."));
+    public void updateGoal(Long goalId, String username, GoalRequest updateRequest) {
+        Goal goal = goalRepository.findByGoalIdAndAccountUsername(goalId, username)
+                .orElseThrow(() -> new ResourceNotFoundException("Could not find goal."));
 
         goal.setName(updateRequest.name());
         goal.setTargetAmount(updateRequest.targetAmount());
@@ -70,11 +90,10 @@ public class GoalService {
     }
 
     @Transactional
-    public void deleteGoal(Long goalId) {
-        if (!goalRepository.existsById(goalId)) {
-            throw new GoalNotFoundException("Could not find goal.");
-        }
+    public void deleteGoal(Long goalId, String username) {
+        Goal goal = goalRepository.findByGoalIdAndAccountUsername(goalId, username)
+                .orElseThrow(() -> new ResourceNotFoundException("Could not find goal."));
 
-        goalRepository.deleteById(goalId);
+        goalRepository.delete(goal);
     }
 }
