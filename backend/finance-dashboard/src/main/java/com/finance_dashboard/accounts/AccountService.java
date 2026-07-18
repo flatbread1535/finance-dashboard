@@ -1,10 +1,10 @@
 package com.finance_dashboard.accounts;
 
 import org.springframework.stereotype.Service;
+import java.util.List;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import com.finance_dashboard.ResourceNotFoundException;
 import jakarta.transaction.Transactional;
-import java.time.LocalDateTime;
 
 @Service
 public class AccountService {
@@ -16,11 +16,8 @@ public class AccountService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public AccountResponseDTO getAccountByUsername(String username) {
-        Account account = accountRepository.findByUsername(username)
-                .orElseThrow(() -> new ResourceNotFoundException("Could not find account."));
-
-        return new AccountResponseDTO(
+    private AccountResponse newAccountResponse(Account account) {
+        return new AccountResponse(
                 account.getAccountId(),
                 account.getRole(),
                 account.getUsername(),
@@ -32,28 +29,25 @@ public class AccountService {
                 account.getLastLoginTime());
     }
 
-    @Transactional
-    public Account createAccount(AccountRequestDTO request) {
-        validateUniqueFields(request.username(), request.email(), request.phoneNumber());
+    public AccountResponse getAccountByUsername(String username) {
+        Account account = accountRepository.findByUsername(username)
+                .orElseThrow(() -> new ResourceNotFoundException("Could not find account."));
 
-        String hashPassword = passwordEncoder.encode(request.password());
-
-        Account newAccount = new Account(
-                null,
-                Role.USER,
-                request.username(),
-                request.email(),
-                request.phoneNumber(),
-                null,
-                false,
-                LocalDateTime.now(),
-                LocalDateTime.now(),
-                hashPassword);
-
-        return accountRepository.save(newAccount);
+        return newAccountResponse(account);
     }
 
-    private void validateUniqueFields(String username, String email, String phoneNumber) {
+    public AccountResponse getAccountById(Long accountId) {
+        Account account = accountRepository.findById(accountId)
+                .orElseThrow(() -> new ResourceNotFoundException("Could not find account."));
+
+        return newAccountResponse(account);
+    }
+
+    public List<AccountResponse> getAllAccounts() {
+        return accountRepository.findAll().stream().map(this::newAccountResponse).toList();
+    }
+
+    private void validateUniqueFieldsForCreation(String username, String email, String phoneNumber) {
         if (accountRepository.existsByEmail(email)) {
             throw new IllegalArgumentException("This email is already taken.");
         }
@@ -68,18 +62,71 @@ public class AccountService {
     }
 
     @Transactional
-    public void updateAccount(String username, AccountRequestDTO updateRequest) {
+    public Account createAccount(AccountCreateRequest request) {
+        validateUniqueFieldsForCreation(request.username(), request.email(), request.phoneNumber());
+
+        String hashPassword = passwordEncoder.encode(request.password());
+
+        Account newAccount = new Account(
+                null,
+                Role.USER,
+                request.username(),
+                request.email(),
+                request.phoneNumber(),
+                null,
+                false,
+                null,
+                null,
+                hashPassword);
+
+        return accountRepository.save(newAccount);
+    }
+
+    private void validateUniqueFieldsForUpdate(Account account, AccountUpdateRequest request) {
+        if (accountRepository.existsByUsernameAndAccountIdNot(request.username(), account.getAccountId())) {
+            throw new IllegalArgumentException("Username already exists.");
+        }
+
+        if (accountRepository.existsByEmailAndAccountIdNot(request.email(), account.getAccountId())) {
+            throw new IllegalArgumentException("Email already exists.");
+        }
+
+        if (accountRepository.existsByPhoneNumberAndAccountIdNot(request.phoneNumber(), account.getAccountId())) {
+            throw new IllegalArgumentException("Phone number already exists.");
+        }
+    }
+
+    @Transactional
+    public void updateAccount(String username, AccountUpdateRequest updateRequest) {
         Account account = accountRepository.findByUsername(username)
                 .orElseThrow(() -> new ResourceNotFoundException("Could not find account."));
 
-        // TODO: Add more advanced logic to update information, particularly prevent
-        // duplicates
+        validateUniqueFieldsForUpdate(account, updateRequest);
+
         account.setUsername(updateRequest.username());
         account.setEmail(updateRequest.email());
         account.setPhoneNumber(updateRequest.phoneNumber());
-        account.setHashPassword(passwordEncoder.encode(updateRequest.password()));
+        account.setProfilePictureUrl(updateRequest.profilePictureUrl());
+        account.setDarkModeEnabled(updateRequest.darkModeEnabled());
 
         accountRepository.save(account);
+    }
+
+    @Transactional
+    public void updatePassword(String username, PasswordChangeRequest passwordChangeRequest) {
+        Account account = accountRepository.findByUsername(username)
+                .orElseThrow(() -> new ResourceNotFoundException("Could not find account."));
+
+        if (!passwordEncoder.matches(passwordChangeRequest.currentPassword(), account.getHashPassword())) {
+            throw new IllegalArgumentException("Current password is incorrect.");
+        }
+
+        if (passwordEncoder.matches(passwordChangeRequest.newPassword(), account.getHashPassword())) {
+            throw new IllegalArgumentException("New password matches current password.");
+        }
+
+        String newHashPassword = passwordEncoder.encode(passwordChangeRequest.newPassword());
+        account.setHashPassword(newHashPassword);
     }
 
     @Transactional
@@ -88,5 +135,17 @@ public class AccountService {
                 .orElseThrow(() -> new ResourceNotFoundException("Could not find account."));
 
         accountRepository.delete(account);
+    }
+
+    @Transactional
+    public void deleteAccountById(Long accountId) {
+        Account account = accountRepository.findById(accountId)
+                .orElseThrow(() -> new ResourceNotFoundException("Could not find account."));
+
+        if (account.getRole() == Role.ADMIN) {
+            throw new IllegalArgumentException("Cannot delete an ADMIN account.");
+        }
+
+        accountRepository.deleteById(accountId);
     }
 }
