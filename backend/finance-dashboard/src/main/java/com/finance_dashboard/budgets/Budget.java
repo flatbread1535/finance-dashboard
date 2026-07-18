@@ -4,6 +4,7 @@ import com.finance_dashboard.accounts.Account;
 import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import org.hibernate.annotations.CreationTimestamp;
 import java.time.LocalDate;
 
 @Entity
@@ -19,10 +20,10 @@ public class Budget {
     @JoinColumn(name = "account_id", nullable = false)
     private Account account;
 
-    @Column(name = "name", nullable = false)
+    @Column(name = "name", nullable = false, length = 100)
     private String name;
 
-    @Column(name = "category", nullable = false)
+    @Column(name = "category", nullable = false, length = 50)
     private String category;
 
     @Column(
@@ -43,7 +44,8 @@ public class Budget {
     )
     private BigDecimal currentSpending = BigDecimal.ZERO;
 
-    @Column(name = "time_created", nullable = false)
+    @CreationTimestamp
+    @Column(name = "time_created", nullable = false, updatable = false)
     private LocalDateTime timeCreated;
 
     @Column(name = "start_date", nullable = false)
@@ -67,7 +69,7 @@ public class Budget {
     @PrePersist
     @PreUpdate
     private void checkIfBudgetDatesAreValid() {
-        if (startDate != null && endDate != null && !startDate.isBefore(endDate)) {
+        if (startDate != null && endDate != null && startDate.isAfter(endDate)) {
             throw new IllegalArgumentException(
                 "Budget dates are invalid. The start_date " + startDate + " must be before end_date " + endDate + "."
             );

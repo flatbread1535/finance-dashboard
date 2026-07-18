@@ -1,63 +1,89 @@
 package com.finance_dashboard.budgets;
 
+import com.finance_dashboard.ResourceNotFoundException;
 import com.finance_dashboard.accounts.Account;
 import com.finance_dashboard.accounts.AccountRepository;
-import com.finance_dashboard.accounts.AccountNotFoundException;
 import org.springframework.stereotype.Service;
 import jakarta.transaction.Transactional;
-import java.time.LocalDateTime;
-import java.util.Optional;
+import java.util.List;
 
 @Service
 public class BudgetService {
-    
+
     private final BudgetRepository budgetRepository;
     private final AccountRepository accountRepository;
 
     public BudgetService(
-        BudgetRepository budgetRepository, 
-        AccountRepository accountRepository
-    ) {
+            BudgetRepository budgetRepository,
+            AccountRepository accountRepository) {
         this.budgetRepository = budgetRepository;
         this.accountRepository = accountRepository;
     }
 
-    public Optional<Budget> getBudgetById(Long budgetId) {
-        return budgetRepository.findById(budgetId);
+    public BudgetResponse getBudget(Long budgetId, String username) {
+        Budget budget = budgetRepository.findByBudgetIdAndAccountUsername(budgetId, username)
+                .orElseThrow(() -> new ResourceNotFoundException("Could not find budget."));
+
+        return new BudgetResponse(
+                budget.getBudgetId(),
+                budget.getName(),
+                budget.getCategory(),
+                budget.getTargetAmount(),
+                budget.getCurrentSpending(),
+                budget.getTimeCreated(),
+                budget.getStartDate(),
+                budget.getEndDate(),
+                budget.getIsThresholdAlert(),
+                budget.getThresholdAlertValue());
     }
 
-    public Iterable<Budget> getAllBudgets() {
-        return budgetRepository.findAll();
+    public List<BudgetResponse> getBudgets(String username) {
+        return budgetRepository.findByAccountUsername(username)
+                .stream()
+                .map(budget -> new BudgetResponse(
+                        budget.getBudgetId(),
+                        budget.getName(),
+                        budget.getCategory(),
+                        budget.getTargetAmount(),
+                        budget.getCurrentSpending(),
+                        budget.getTimeCreated(),
+                        budget.getStartDate(),
+                        budget.getEndDate(),
+                        budget.getIsThresholdAlert(),
+                        budget.getThresholdAlertValue()))
+                .toList();
     }
 
     @Transactional
-    public Budget createBudget(BudgetRequest request) {
+    public Budget createBudget(String username, BudgetRequest request) {
+        if (request.startDate().isAfter(request.endDate())) {
+                throw new IllegalArgumentException("Start date cannot be after end date.");
+        }
 
-        Account account = accountRepository.findById(request.accountId())
-                .orElseThrow(() -> new AccountNotFoundException("Could not find account."));
+        Account account = accountRepository.findByUsername(username)
+                .orElseThrow(() -> new ResourceNotFoundException("Could not find account."));
 
-        Budget newBudget = new Budget(
-            null,
-            account,
-            request.name(),
-            request.category(),
-            request.targetAmount(),
-            request.currentSpending(),
-            LocalDateTime.now(),
-            request.startDate(),
-            request.endDate(),
-            request.isThresholdAlert(),
-            request.thresholdAlertValue()
-        );
+        Budget budget = new Budget(
+                null,
+                account,
+                request.name(),
+                request.category(),
+                request.targetAmount(),
+                request.currentSpending(),
+                null,
+                request.startDate(),
+                request.endDate(),
+                request.isThresholdAlert(),
+                request.thresholdAlertValue());
 
-        return budgetRepository.save(newBudget);
+        return budgetRepository.save(budget);
     }
 
     @Transactional
-    public void updateBudget(Long budgetId, BudgetRequest updateRequest) {
-        Budget budget = budgetRepository.findById(budgetId)
-                .orElseThrow(() -> new BudgetNotFoundException("Could not find budget."));
-
+    public void updateBudget(Long budgetId, String username, BudgetRequest updateRequest) {
+        Budget budget = budgetRepository.findByBudgetIdAndAccountUsername(budgetId, username)
+                .orElseThrow(() -> new ResourceNotFoundException("Could not find budget."));
+                
         budget.setName(updateRequest.name());
         budget.setCategory(updateRequest.category());
         budget.setTargetAmount(updateRequest.targetAmount());
@@ -66,16 +92,15 @@ public class BudgetService {
         budget.setEndDate(updateRequest.endDate());
         budget.setIsThresholdAlert(updateRequest.isThresholdAlert());
         budget.setThresholdAlertValue(updateRequest.thresholdAlertValue());
-        
+
         budgetRepository.save(budget);
     }
-
+ 
     @Transactional
-    public void deleteBudget(Long budgetId) {
-        if (!budgetRepository.existsById(budgetId)) {
-            throw new BudgetNotFoundException("Could not find budget.");
-        }
+    public void deleteBudget(Long budgetId, String username) {
+        Budget budget = budgetRepository.findByBudgetIdAndAccountUsername(budgetId, username)
+                .orElseThrow(() -> new ResourceNotFoundException("Could not find budget."));
 
-        budgetRepository.deleteById(budgetId);
+        budgetRepository.delete(budget);
     }
 }
