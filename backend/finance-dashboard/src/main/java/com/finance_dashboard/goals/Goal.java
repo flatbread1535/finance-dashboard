@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import org.hibernate.annotations.CreationTimestamp;
 
 @Entity
 @Table(name = "goals")
@@ -19,7 +20,7 @@ public class Goal {
     @JoinColumn(name = "account_id", nullable = false)
     private Account account;
 
-    @Column(name = "name", nullable = false)
+    @Column(name = "name", nullable = false, length = 100)
     private String name;
 
     @Column(name = "target_amount", nullable = false, precision = 15, scale = 2, check = @CheckConstraint(constraint = "target_amount >= 0"))
@@ -28,19 +29,22 @@ public class Goal {
     @Column(name = "current_amount", nullable = false, precision = 15, scale = 2, check = @CheckConstraint(constraint = "current_amount >= 0"))
     private BigDecimal currentAmount = BigDecimal.ZERO;
 
+    @CreationTimestamp
     @Column(name = "time_created", nullable = false)
     private LocalDateTime timeCreated;
 
     @Column(name = "target_date", nullable = false)
     private LocalDate targetDate;
 
-    @Column(name = "priority_level", nullable = false)
-    private String priorityLevel;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "priority_level", nullable = false, length = 20)
+    private PriorityLevel priorityLevel;
 
-    @Column(name = "status", nullable = false)
-    private String status;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status", nullable = false, length = 20)
+    private Status status;
 
-    @Column(name = "description")
+    @Column(name = "description", length = 250)
     private String description;
 
     protected Goal() {
@@ -54,8 +58,8 @@ public class Goal {
             BigDecimal currentAmount,
             LocalDateTime timeCreated,
             LocalDate targetDate,
-            String priorityLevel,
-            String status,
+            PriorityLevel priorityLevel,
+            Status status,
             String description) {
         this.goalId = goalId;
         this.account = account;
@@ -125,19 +129,19 @@ public class Goal {
         this.targetDate = targetDate;
     }
 
-    public String getPriorityLevel() {
+    public PriorityLevel getPriorityLevel() {
         return priorityLevel;
     }
 
-    public void setPriorityLevel(String priorityLevel) {
+    public void setPriorityLevel(PriorityLevel priorityLevel) {
         this.priorityLevel = priorityLevel;
     }
 
-    public String getStatus() {
+    public Status getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(Status status) {
         this.status = status;
     }
 
