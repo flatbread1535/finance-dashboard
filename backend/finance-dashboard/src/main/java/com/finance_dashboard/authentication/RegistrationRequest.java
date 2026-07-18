@@ -4,7 +4,7 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
-public record RegistrationRequestDTO(
+public record RegistrationRequest(
     
     @NotBlank(message = "Username cannot be blank.")
     @Size(max = 20, message = "Username cannot be more than 20 characters.")

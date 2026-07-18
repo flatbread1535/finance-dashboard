@@ -1,9 +1,8 @@
 package com.finance_dashboard.authentication;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 
-public record LoginRequestDTO(
+public record LoginRequest(
     
     @NotBlank(message = "Username cannot be blank.")   
     @Size(max = 20, message = "Username cannot be more than 20 characters.")

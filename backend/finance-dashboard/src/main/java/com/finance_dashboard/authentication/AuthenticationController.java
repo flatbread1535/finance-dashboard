@@ -18,12 +18,12 @@ public class AuthenticationController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<LoginResponseDTO> login(@RequestBody @Valid LoginRequestDTO loginRequest) {
+    public ResponseEntity<LoginResponse> login(@RequestBody @Valid LoginRequest loginRequest) {
         return ResponseEntity.ok(authenticationService.login(loginRequest));
     }
 
     @PostMapping("/register")
-    public ResponseEntity<LoginResponseDTO> register(@RequestBody @Valid RegistrationRequestDTO registrationRequest) {
+    public ResponseEntity<LoginResponse> register(@RequestBody @Valid RegistrationRequest registrationRequest) {
         return ResponseEntity.ok(authenticationService.register(registrationRequest));
     }
 }

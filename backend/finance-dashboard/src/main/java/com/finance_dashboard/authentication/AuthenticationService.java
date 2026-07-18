@@ -3,7 +3,7 @@ package com.finance_dashboard.authentication;
 import com.finance_dashboard.ResourceNotFoundException;
 import com.finance_dashboard.accounts.Account;
 import com.finance_dashboard.accounts.AccountRepository;
-import com.finance_dashboard.accounts.AccountRequestDTO;
+import com.finance_dashboard.accounts.AccountCreateRequest;
 import com.finance_dashboard.accounts.AccountService;
 import com.finance_dashboard.security.JwtService;
 import java.time.LocalDateTime;
@@ -30,7 +30,7 @@ public class AuthenticationService {
         this.jwtService = jwtService;
     }
 
-    public LoginResponseDTO login(LoginRequestDTO request) {
+    public LoginResponse login(LoginRequest request) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         request.username(),
@@ -44,17 +44,17 @@ public class AuthenticationService {
 
         String token = jwtService.generateToken(account);
 
-        return new LoginResponseDTO(
+        return new LoginResponse(
                 account.getAccountId(),
                 account.getRole(),
                 account.getUsername(),
                 token);
     }
 
-    public LoginResponseDTO register(RegistrationRequestDTO request) {
+    public LoginResponse register(RegistrationRequest request) {
 
         Account account = accountService.createAccount(
-                new AccountRequestDTO(
+                new AccountCreateRequest(
                         request.username(),
                         request.email(),
                         request.phoneNumber(),
@@ -62,7 +62,7 @@ public class AuthenticationService {
 
         String token = jwtService.generateToken(account);
 
-        return new LoginResponseDTO(
+        return new LoginResponse(
                 account.getAccountId(),
                 account.getRole(),
                 account.getUsername(),
