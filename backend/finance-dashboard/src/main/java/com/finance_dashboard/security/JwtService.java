@@ -1,5 +1,6 @@
 package com.finance_dashboard.security;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import com.finance_dashboard.accounts.Account;
@@ -14,7 +15,8 @@ import javax.crypto.SecretKey;
 @Service
 public class JwtService {
 
-    private final String SECRET_KEY = "cG9sZXN0dWRlbnRwaWN0dXJlZHNlZWluZ2ZpZnR5cGFyYWxsZWxza3lhZ2FpbnN0Zm8=";
+    @Value("${jwt.secret}")
+    private String secretKey;
 
     public boolean isValid(String token, UserDetails userDetails) {
         String username = extractUsername(token);
@@ -62,7 +64,7 @@ public class JwtService {
     }
 
     private SecretKey getSignInKey() {
-        String secret = SECRET_KEY;
+        String secret = secretKey;
 
         byte[] keyBytes = Decoders.BASE64.decode(secret);
         return Keys.hmacShaKeyFor(keyBytes);
