@@ -3,9 +3,10 @@ package com.finance_dashboard.goals;
 import com.finance_dashboard.ResourceNotFoundException;
 import com.finance_dashboard.accounts.Account;
 import com.finance_dashboard.accounts.AccountRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import jakarta.transaction.Transactional;
-import java.util.List;
 
 @Service
 public class GoalService {
@@ -36,9 +37,8 @@ public class GoalService {
             goal.getDescription());
     }
 
-    public List<GoalResponse> getGoals(String username) {
-        return goalRepository.findByAccountUsername(username)
-                .stream()
+    public Page<GoalResponse> getGoals(Pageable pageable, String username) {
+        return goalRepository.findByAccountUsername(pageable, username)
                 .map(goal -> new GoalResponse(
                         goal.getGoalId(),
                         goal.getName(),
@@ -47,8 +47,7 @@ public class GoalService {
                         goal.getTargetDate(),
                         goal.getPriorityLevel(),
                         goal.getStatus(),
-                        goal.getDescription()))
-                .toList();
+                        goal.getDescription()));
     }
 
     @Transactional

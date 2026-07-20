@@ -1,5 +1,7 @@
 package com.finance_dashboard.goals;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -12,7 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.RequestMapping;
 import java.net.URI;
-import java.util.List;
 
 @RestController
 @RequestMapping("/goals")
@@ -30,8 +31,8 @@ public class GoalController {
     }
 
     @GetMapping
-    public ResponseEntity<List<GoalResponse>> getAllGoals(Authentication authentication) {
-        return ResponseEntity.ok(goalService.getGoals(authentication.getName()));
+    public ResponseEntity<Page<GoalResponse>> getAllGoals(Pageable pageable, Authentication authentication) {
+        return ResponseEntity.ok(goalService.getGoals(pageable, authentication.getName()));
     }
 
     @PostMapping

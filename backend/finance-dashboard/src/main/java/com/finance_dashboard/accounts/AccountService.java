@@ -1,7 +1,8 @@
 package com.finance_dashboard.accounts;
 
 import org.springframework.stereotype.Service;
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import com.finance_dashboard.ResourceNotFoundException;
 import jakarta.transaction.Transactional;
@@ -43,8 +44,8 @@ public class AccountService {
         return newAccountResponse(account);
     }
 
-    public List<AccountResponse> getAllAccounts() {
-        return accountRepository.findAll().stream().map(this::newAccountResponse).toList();
+    public Page<AccountResponse> getAllAccounts(Pageable pageable) {
+        return accountRepository.findAll(pageable).map(this::newAccountResponse);
     }
 
     private void validateUniqueFieldsForCreation(String username, String email, String phoneNumber) {

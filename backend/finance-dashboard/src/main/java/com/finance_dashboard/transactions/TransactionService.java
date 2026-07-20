@@ -3,9 +3,10 @@ package com.finance_dashboard.transactions;
 import com.finance_dashboard.ResourceNotFoundException;
 import com.finance_dashboard.accounts.Account;
 import com.finance_dashboard.accounts.AccountRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import jakarta.transaction.Transactional;
-import java.util.List;
 
 @Service
 public class TransactionService {
@@ -33,17 +34,15 @@ public class TransactionService {
                 transaction.getCategory());
     }
 
-    public List<TransactionResponse> getTransactions(String username) {
-        return transactionRepository.findByAccountUsername(username)
-                .stream()
+    public Page<TransactionResponse> getTransactions(Pageable pageable, String username) {
+        return transactionRepository.findByAccountUsername(pageable, username)
                 .map(transaction -> new TransactionResponse(
                         transaction.getTransactionId(),
                         transaction.getTimeCreated(),
                         transaction.getAmount(),
                         transaction.getCurrency(),
                         transaction.getStatus(),
-                        transaction.getCategory()))
-                .toList();
+                        transaction.getCategory()));
     }
 
     @Transactional

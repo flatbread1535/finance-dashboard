@@ -1,5 +1,7 @@
 package com.finance_dashboard.transactions;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -12,7 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
 import jakarta.validation.Valid;
 import java.net.URI;
-import java.util.List;
 
 @RestController
 @RequestMapping("/transactions")
@@ -30,8 +31,8 @@ public class TransactionController {
     }
 
     @GetMapping
-    public ResponseEntity<List<TransactionResponse>> getAllTransactions(Authentication authentication) {
-        return ResponseEntity.ok(transactionService.getTransactions(authentication.getName()));
+    public ResponseEntity<Page<TransactionResponse>> getAllTransactions(Pageable pageable, Authentication authentication) {
+        return ResponseEntity.ok(transactionService.getTransactions(pageable, authentication.getName()));
     }
 
     @PostMapping

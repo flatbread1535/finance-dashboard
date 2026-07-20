@@ -3,9 +3,10 @@ package com.finance_dashboard.budgets;
 import com.finance_dashboard.ResourceNotFoundException;
 import com.finance_dashboard.accounts.Account;
 import com.finance_dashboard.accounts.AccountRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import jakarta.transaction.Transactional;
-import java.util.List;
 
 @Service
 public class BudgetService {
@@ -37,9 +38,8 @@ public class BudgetService {
                 budget.getThresholdAlertValue());
     }
 
-    public List<BudgetResponse> getBudgets(String username) {
-        return budgetRepository.findByAccountUsername(username)
-                .stream()
+    public Page<BudgetResponse> getBudgets(Pageable pageable, String username) {
+        return budgetRepository.findByAccountUsername(pageable, username)
                 .map(budget -> new BudgetResponse(
                         budget.getBudgetId(),
                         budget.getName(),
@@ -50,8 +50,7 @@ public class BudgetService {
                         budget.getStartDate(),
                         budget.getEndDate(),
                         budget.getIsThresholdAlert(),
-                        budget.getThresholdAlertValue()))
-                .toList();
+                        budget.getThresholdAlertValue()));
     }
 
     @Transactional

@@ -1,6 +1,7 @@
 package com.finance_dashboard.accounts;
 
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -26,8 +27,8 @@ public class AdminAccountController {
     }
 
     @GetMapping
-    public ResponseEntity<List<AccountResponse>> getAllAccounts() {
-        return ResponseEntity.ok(accountService.getAllAccounts());
+    public ResponseEntity<Page<AccountResponse>> getAllAccounts(Pageable pageable) {
+        return ResponseEntity.ok(accountService.getAllAccounts(pageable));
     }
 
     @DeleteMapping("/{accountId}")
