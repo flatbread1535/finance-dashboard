@@ -1,0 +1,5 @@
+backend/finance-dashboard/.dockerignore
+target/
+.git
+.idea
+.vscode
