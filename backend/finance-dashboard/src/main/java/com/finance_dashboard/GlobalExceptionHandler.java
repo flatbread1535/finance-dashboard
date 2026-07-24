@@ -22,7 +22,7 @@ public class GlobalExceptionHandler {
             errorMap.put(fieldName, message);
         });
         
-        ApiErrorResponse response = new ApiErrorResponse(
+        ApiErrorResponse error = new ApiErrorResponse(
             HttpStatus.BAD_REQUEST.value(),
             "Validation Failed",
             null,
@@ -30,12 +30,20 @@ public class GlobalExceptionHandler {
             LocalDateTime.now()
         );
 
-        return ResponseEntity.badRequest().body(response);
+        return ResponseEntity.badRequest().body(error);
     }
 
     @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseEntity<String> handleIllegalArgumentException(IllegalArgumentException e) {
-        return ResponseEntity.badRequest().body(e.getMessage());
+    public ResponseEntity<ApiErrorResponse> handleIllegalArgumentException(IllegalArgumentException e) {
+        ApiErrorResponse error = new ApiErrorResponse(
+            HttpStatus.BAD_REQUEST.value(),
+            "Illegal Argument",
+            e.getMessage(),
+            null,
+            LocalDateTime.now()
+        );
+        
+        return ResponseEntity.badRequest().body(error);
     }
 
     @ExceptionHandler(ResourceNotFoundException.class)
