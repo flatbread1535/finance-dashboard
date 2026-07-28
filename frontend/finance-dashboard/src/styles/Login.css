@@ -1,0 +1,64 @@
+/* Login Page Container */
+.login-page {
+  font-family:
+    "Index",
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    "Helvetica Neue",
+    Arial,
+    sans-serif;
+  display: grid;
+  grid-template-columns: 1fr;
+  place-items: center;
+  height: 100%;
+  padding: 1.5rem;
+  box-sizing: border-box;
+}
+
+/* Login top  */
+.login-top {
+  text-align: center;
+  font-size: 0.9rem;
+}
+
+.login-top h1 {
+  font-size: 1.75rem;
+  font-weight: bold;
+  margin-top: 0.8rem;
+  color: var(--slate-blue-theme);
+}
+
+/* Bottom registration prompt */
+.registration-prompt {
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+.registration-prompt a,
+.forgot-password a {
+    color: var(--link);
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.forgot-password a {
+    font-size: 0.9rem;
+    margin-left: 0.75rem;
+}
+
+.registration-prompt a:visited,
+.forgot-password a:visited {
+    color: var(--link);
+}
+
+.registration-prompt a:hover,
+.forgot-password a:hover {
+    color: var(--link-hover);
+}
+
+/* Submit Button Container */
+.submission.login {
+  margin-top: 12.75rem;
+}

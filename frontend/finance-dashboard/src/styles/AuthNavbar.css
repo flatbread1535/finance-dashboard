@@ -1,0 +1,77 @@
+/* Login/Register authentication navbar */
+.auth-navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.15);
+  padding: 2rem;
+}
+
+/* Link to homepage */
+.home-link {
+  font-family:
+    "Index",
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    "Helvetica Neue",
+    Arial,
+    sans-serif;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 2rem;
+  color: var(--slate-blue-theme);
+  margin-left: 3rem;
+}
+
+.home-link:visited {
+  color: var(--slate-blue-theme);
+}
+
+.auth-navbar .home-link:hover {
+  color: var(--slate-blue-theme-hover);
+}
+
+/* Navbar Sign Up and Login Buttons */
+.auth-btns {
+  display: flex;
+  gap: 2rem;
+  margin-right: 3rem;
+}
+
+.sign-up-btn,
+.login-btn {
+  font-family:
+    "Index",
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    "Helvetica Neue",
+    Arial,
+    sans-serif;
+  text-decoration: none;
+  font-weight: bold;
+  background-color: var(--slate-blue-theme);
+  border: none;
+  border-radius: 32px;
+  font-size: 1rem;
+  color: var(--white);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.sign-up-btn {
+  padding: 1rem 2rem; 
+}
+
+.login-btn {
+  padding: 1rem 2.5rem;
+}
+
+.sign-up-btn:hover,
+.login-btn:hover {
+  background-color: var(--slate-blue-theme-hover);
+}

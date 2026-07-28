@@ -1,0 +1,91 @@
+.public-layout {
+    min-height: 100vh;
+    display: grid;
+    grid-template-rows: auto 1fr;
+}
+
+/* Register/Login Form */
+form {
+  display: grid;
+  gap: 0.5rem;
+  width: 100%;
+  max-width: 32rem;
+  box-sizing: border-box;
+  box-shadow:
+    0 0 6px -2px rgba(0, 0, 0, 0.15),
+    0 0 14px 2px rgba(0, 0, 0, 0.15);
+  padding: 0.8rem 1.5rem;
+  border-radius: 16px;
+
+  /* Keeps form centered when max width is reached */
+  margin-inline: auto;
+}
+
+/* Form label and input containers */
+.input-container {
+    display: grid;
+    gap: 1.25rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+/* Form Labels */
+.form-group label {
+  font-size: 0.9rem;
+  margin-left: 0.75rem;
+}
+
+/* Form Input */
+.form-group input {
+  font-size: 1rem;
+  font-family: inherit;
+  width: 100%;
+  padding: 0.625rem 0.75rem;
+  border: 1px solid var(--subtle-black);
+  border-radius: 16px;
+  box-sizing: border-box;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: var(--input-selected);
+}
+
+.form-group input:focus-visible {
+  outline: 2px solid var(--input-selected);
+}
+
+/* Submit Button Container */
+.submission {
+  display: grid;
+  gap: 0.25rem;
+}
+
+.submit-btn {
+  color: var(--white);
+  font-size: 1rem;
+  font-weight: bold;
+  font-family: inherit;
+  padding: 0.75rem 0.75rem;
+  border-radius: 16px;
+  border: none;
+  margin-top: 0.8rem;
+  background-color: var(--slate-blue-theme);
+  cursor: pointer;
+}
+
+.submit-btn:hover {
+  background-color: var(--slate-blue-theme-hover);
+}
+
+/* Validation */
+.error-msg,
+.submit-error {
+  font-size: 0.75rem;
+  color: var(--validation-red);
+  margin-left: 0.75rem;
+}
