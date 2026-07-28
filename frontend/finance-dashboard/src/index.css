@@ -1,0 +1,28 @@
+/* Overall webpage design */
+/* General Styling */
+@font-face {
+  font-family: "Index";
+  src: url("./assets/fonts/Inter/static/Inter_18pt-Regular.ttf") format("truetype");
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  --subtle-black: #121212;
+  --input-selected: #4da3ff;
+  --validation-red: #dc2626;
+  --slate-blue-theme: #637792;
+  --slate-blue-theme-hover: #8aa0bd;
+  --white: #ffffff;
+  --link: #0047AB;
+  --link-hover: #2a94fd;
+}
+
+html,
+body,
+#root {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+}
