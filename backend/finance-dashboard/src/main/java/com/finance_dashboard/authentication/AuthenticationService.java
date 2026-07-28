@@ -1,14 +1,18 @@
 package com.finance_dashboard.authentication;
 
-import com.finance_dashboard.ResourceNotFoundException;
 import com.finance_dashboard.accounts.Account;
 import com.finance_dashboard.accounts.AccountRepository;
 import com.finance_dashboard.accounts.AccountCreateRequest;
 import com.finance_dashboard.accounts.AccountService;
+import com.finance_dashboard.exceptions.ResourceNotFoundException;
 import com.finance_dashboard.security.JwtService;
+import com.finance_dashboard.exceptions.ValidationException;
 import java.time.LocalDateTime;
+import java.util.Map;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -31,10 +35,16 @@ public class AuthenticationService {
     }
 
     public LoginResponse login(LoginRequest request) {
-        authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        request.username(),
-                        request.password()));
+        try {
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(
+                            request.username(),
+                            request.password()));
+        } catch (UsernameNotFoundException e) {
+            throw new ValidationException(Map.of("username", "Username not found"));
+        } catch (BadCredentialsException e) {
+            throw new ValidationException(Map.of("password", "Incorrect password"));
+        }
 
         Account account = accountRepository.findByUsername(request.username())
                 .orElseThrow(() -> new ResourceNotFoundException("Could not find account."));
@@ -56,8 +66,6 @@ public class AuthenticationService {
         Account account = accountService.createAccount(
                 new AccountCreateRequest(
                         request.username(),
-                        request.email(),
-                        request.phoneNumber(),
                         request.password()));
 
         String token = jwtService.generateToken(account);
