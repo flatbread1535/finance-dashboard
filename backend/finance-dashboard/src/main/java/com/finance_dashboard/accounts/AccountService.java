@@ -1,11 +1,17 @@
 package com.finance_dashboard.accounts;
 
 import org.springframework.stereotype.Service;
+
+import com.finance_dashboard.exceptions.ResourceNotFoundException;
+
+import java.util.Map;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import com.finance_dashboard.ResourceNotFoundException;
+
 import jakarta.transaction.Transactional;
+import com.finance_dashboard.exceptions.ValidationException;;
 
 @Service
 public class AccountService {
@@ -48,23 +54,12 @@ public class AccountService {
         return accountRepository.findAll(pageable).map(this::newAccountResponse);
     }
 
-    private void validateUniqueFieldsForCreation(String username, String email, String phoneNumber) {
-        if (accountRepository.existsByEmail(email)) {
-            throw new IllegalArgumentException("This email is already taken.");
-        }
-
-        if (accountRepository.existsByUsername(username)) {
-            throw new IllegalArgumentException("Username already exists");
-        }
-
-        if (accountRepository.existsByPhoneNumber(phoneNumber)) {
-            throw new IllegalArgumentException("Phone number already exists");
-        }
-    }
-
     @Transactional
     public Account createAccount(AccountCreateRequest request) {
-        validateUniqueFieldsForCreation(request.username(), request.email(), request.phoneNumber());
+        if (accountRepository.existsByUsername(request.username())) {
+            throw new ValidationException(
+                    Map.of("username", "Username already taken"));
+        }
 
         String hashPassword = passwordEncoder.encode(request.password());
 
@@ -72,8 +67,8 @@ public class AccountService {
                 null,
                 Role.USER,
                 request.username(),
-                request.email(),
-                request.phoneNumber(),
+                null,
+                null,
                 null,
                 false,
                 null,
