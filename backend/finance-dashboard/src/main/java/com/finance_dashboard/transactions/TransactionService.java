@@ -1,8 +1,9 @@
 package com.finance_dashboard.transactions;
 
-import com.finance_dashboard.ResourceNotFoundException;
 import com.finance_dashboard.accounts.Account;
 import com.finance_dashboard.accounts.AccountRepository;
+import com.finance_dashboard.exceptions.ResourceNotFoundException;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
