@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import ValidationMessage from "./ValidationMessage";
-import "../styles/PublicLayout.css";
-import "../styles/Login.css";
+import ValidationMessage from "../../ValidationMessage";
+import "../../styles/public/PublicLayout.css";
+import "../../styles/public/Login.css";
 
 const Login = () => {
   const [username, setUsername] = useState("");

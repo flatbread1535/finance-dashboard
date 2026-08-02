@@ -1,7 +1,7 @@
 .public-layout {
-    min-height: 100vh;
-    display: grid;
-    grid-template-rows: auto 1fr;
+  min-height: 100vh;
+  display: grid;
+  grid-template-rows: auto 1fr;
 }
 
 /* Register/Login Form */
@@ -23,8 +23,8 @@ form {
 
 /* Form label and input containers */
 .input-container {
-    display: grid;
-    gap: 1.25rem;
+  display: grid;
+  gap: 1.25rem;
 }
 
 .form-group {

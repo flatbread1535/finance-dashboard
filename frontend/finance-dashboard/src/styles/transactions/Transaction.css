@@ -1,0 +1,21 @@
+.transactions-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  margin: 2rem;
+  box-sizing: border-box;
+}
+
+@media (max-width: 900px) {
+  .transactions-container {
+    grid-template-columns: 1fr;
+  }
+
+  .table-container {
+    grid-column: 1 / 2;
+  }
+
+  .transaction-chart {
+    min-height: 320px;
+  }
+}

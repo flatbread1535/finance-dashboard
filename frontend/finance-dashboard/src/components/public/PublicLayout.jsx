@@ -1,5 +1,5 @@
 import { Outlet } from "react-router-dom";
-import AuthNavbar from "../components/AuthNavbar";
+import AuthNavbar from "./AuthNavbar";
 
 const PublicLayout = () => {
   return (

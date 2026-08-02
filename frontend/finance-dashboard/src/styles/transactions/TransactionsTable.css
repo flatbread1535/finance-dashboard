@@ -1,0 +1,139 @@
+/* Table section container */
+.table-container {
+  font-family:
+    "Index",
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    "Helvetica Neue",
+    Arial,
+    sans-serif;
+  font-weight: bold;
+  color: var(--slate-blue-theme);
+  grid-column: 1 / 2;
+  padding: 2rem;
+  border: 2px solid var(--slate-blue-theme);
+  border-radius: 32px;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+/* Table header */
+.table-header {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  border-bottom: 2px solid var(--slate-blue-theme);
+}
+
+.table-header h2 {
+  font-size: 1.5rem;
+  margin: 0;
+  padding: 0;
+  min-width: 0;
+}
+
+.table-header button {
+  border: none;
+  padding: 0.75rem 1.5rem;
+  background-color: var(--white);
+  border: 2px solid var(--slate-blue-theme);
+  border-radius: 16px;
+  margin-left: 1rem;
+  font-size: 0.9rem;
+  font-weight: bold;
+  color: var(--slate-blue-theme);
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.table-header button:hover {
+  background-color: var(--gray-theme-dark-hover);
+}
+
+/* Transaction table */
+.table-scroll {
+    overflow-y: auto;
+    max-height: calc(100vh - 18rem);
+}
+
+.transaction-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+caption {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+thead {
+  border-bottom: 2px solid var(--slate-blue-theme);
+  font-size: 1.25rem;
+}
+
+/* Table cells */
+.transaction-table th,
+.transaction-table td {
+  padding: 0.5rem;
+  text-align: left;
+  vertical-align: middle;
+  border-right: 2px solid var(--slate-blue-theme);
+  border-bottom: 2px solid var(--slate-blue-theme);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.transaction-table th:last-child,
+.transaction-table td:last-child {
+  border-right: none;
+}
+
+.transaction-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+/* Edit and delete buttons */
+.transaction-options {
+  display: flex;
+  gap: 0.25rem;
+}
+
+.edit-btn,
+.delete-btn {
+  border: none;
+  font-size: 1rem;
+  cursor: pointer;
+  color: var(--white);
+  font-weight: bold;
+}
+
+.edit-btn {
+  padding: 0.5rem 1rem;
+  background-color: var(--edit-green);
+}
+
+.delete-btn {
+  padding: 0.5rem;
+  background-color: var(--delete-red);
+}
+
+.edit-btn:hover {
+  background-color: var(--edit-green-hover);
+}
+
+.delete-btn:hover {
+  background-color: var(--delete-red-hover);
+}

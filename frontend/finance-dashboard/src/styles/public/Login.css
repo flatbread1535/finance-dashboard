@@ -38,24 +38,24 @@
 
 .registration-prompt a,
 .forgot-password a {
-    color: var(--link);
-    text-decoration: none;
-    font-weight: bold;
+  color: var(--link);
+  text-decoration: none;
+  font-weight: bold;
 }
 
 .forgot-password a {
-    font-size: 0.9rem;
-    margin-left: 0.75rem;
+  font-size: 0.9rem;
+  margin-left: 0.75rem;
 }
 
 .registration-prompt a:visited,
 .forgot-password a:visited {
-    color: var(--link);
+  color: var(--link);
 }
 
 .registration-prompt a:hover,
 .forgot-password a:hover {
-    color: var(--link-hover);
+  color: var(--link-hover);
 }
 
 /* Submit Button Container */

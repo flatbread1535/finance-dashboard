@@ -1,0 +1,151 @@
+/* Modal overlay */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  padding: 1rem;
+  box-sizing: border-box;
+}
+
+/* Modal container */
+.modal {
+  font-family:
+    "Index",
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    "Helvetica Neue",
+    Arial,
+    sans-serif;
+  background-color: var(--white);
+  border: 3px solid var(--slate-blue-theme);
+  border-radius: 24px;
+  width: 100%;
+  max-width: 500px;
+  padding: 1.75rem;
+  box-sizing: border-box;
+}
+
+/* Modal headers */
+.modal h2 {
+  font-size: 1.5rem;
+  color: var(--slate-blue-theme);
+}
+
+.modal p {
+  color: var(--slate-blue-theme);
+  font-size: 1.25rem;
+}
+
+/* Modal form */
+.modal-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.modal label {
+  font-size: 0.9rem;
+  margin: 1rem 0 0 0.75rem;
+}
+
+.modal input[type="text"],
+.modal input[type="number"],
+.modal select {
+  font-size: 1rem;
+  font-family: inherit;
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--subtle-black);
+  border-radius: 16px;
+  box-sizing: border-box;
+}
+
+.modal input[type="text"]:focus,
+.modal input[type="number"]:focus,
+.modal select:focus {
+  outline: none;
+  border-color: var(--input-selected);
+}
+
+.modal input[type="text"]:focus-visible,
+.modal input[type="number"]:focus-visible,
+.modal select:focus-visible {
+  outline: 2px solid var(--input-selected);
+}
+
+/* Modal errors */
+.modal-error-msg {
+    color: var(--validation-red);
+}
+
+/* Modal buttons */
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.cancel-btn,
+.modal-submit-btn,
+.delete-confirm-btn {
+  max-width: 120px;
+  height: 40px;
+  padding: 0.75rem 1.25rem;
+  font-size: 0.9rem;
+  font-weight: bold;
+  border-radius: 16px;
+  cursor: pointer;
+  display: border-box;
+}
+
+/* Cancel button */
+.cancel-btn {
+  background-color: var(--white);
+  border: 1px solid var(--subtle-black);
+  padding: 0.75rem 1.25rem;
+}
+
+.cancel-btn:hover {
+  background-color: var(--gray-theme);
+  border-color: var(--subtle-black);
+}
+
+/* Submit button */
+.modal-submit-btn {
+  border: none;
+  background-color: var(--submit-blue);
+  border: 1px solid var(--submit-blue);
+  color: var(--white);
+  padding: 0.75rem 1.5rem;
+}
+
+.modal-submit-btn:hover {
+  background-color: var(--submit-blue-hover);
+}
+
+/* Delete button for confirmation */
+.delete-confirm-btn {
+  background-color: var(--delete-red);
+  border: none;
+  color: var(--white);
+}
+
+.delete-confirm-btn:hover {
+  background-color: var(--delete-red-hover);
+}
+
+/* Disabled State */
+.modal button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}

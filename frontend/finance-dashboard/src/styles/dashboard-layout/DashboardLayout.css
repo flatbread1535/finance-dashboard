@@ -1,0 +1,33 @@
+/* Overall dashboard container layout */
+.dashboard-layout {
+  display: grid;
+  grid-template-columns: 16rem 1fr;
+  grid-template-rows: 4rem 1fr;
+  transition: grid-template-columns 0.2s ease;
+}
+
+.dashboard-layout.sidebar-collapsed {
+  grid-template-columns: 0 1fr;
+}
+
+/* Coming soon styling */
+.coming-soon {
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+}
+
+.coming-soon p {
+  font-family:
+    "Index",
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    "Helvetica Neue",
+    Arial,
+    sans-serif;
+  font-size: 2.5rem;
+  color: var(--slate-blue-theme);
+  text-align: center;
+}

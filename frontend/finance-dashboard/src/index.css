@@ -2,7 +2,8 @@
 /* General Styling */
 @font-face {
   font-family: "Index";
-  src: url("./assets/fonts/Inter/static/Inter_18pt-Regular.ttf") format("truetype");
+  src: url("./assets/fonts/Inter/static/Inter_18pt-Regular.ttf")
+    format("truetype");
   font-style: normal;
   font-display: swap;
 }
@@ -11,18 +12,27 @@
   --subtle-black: #121212;
   --input-selected: #4da3ff;
   --validation-red: #dc2626;
-  --slate-blue-theme: #637792;
+  --delete-red: #FF4D4F;
+  --delete-red-hover: #FF7476;
+  --edit-green: #28a745;
+  --edit-green-hover: #3ED060;
+  --submit-blue: #2563eb;
+  --submit-blue-hover: #1d4ed8;
+  --slate-blue-theme: #425570;
   --slate-blue-theme-hover: #8aa0bd;
   --white: #ffffff;
-  --link: #0047AB;
+  --link: #0047ab;
   --link-hover: #2a94fd;
+  --gray-theme: #f1f5f9;
+  --gray-theme-hover: #e2e8f0;
+  --gray-theme-dark-hover: #d9e5ed;
 }
 
 html,
 body,
 #root {
-    height: 100%;
-    margin: 0;
-    padding: 0;
-    overflow-x: hidden;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
 }

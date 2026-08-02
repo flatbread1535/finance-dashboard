@@ -1,5 +1,5 @@
 import { useLocation, Link } from "react-router-dom";
-import "../styles/AuthNavbar.css";
+import "../../styles/public/AuthNavbar.css";
 
 const AuthNavbar = () => {
   const location = useLocation();
