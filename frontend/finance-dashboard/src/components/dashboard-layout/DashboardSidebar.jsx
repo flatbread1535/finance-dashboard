@@ -7,13 +7,13 @@ import {
   SettingsIcon,
 } from "../../assets/svgs/SidebarIcons";
 import { Link } from "react-router-dom";
+import defaultProfileImage from "../../assets/images/default-pfp.jpg";
 import "../../styles/dashboard-layout/DashboardLayout.css";
 import "../../styles/dashboard-layout/DashboardSidebar.css";
 
 const DashboardSidebar = ({ account, isSidebarCollapsed }) => {
   const profileUrl = account.profilePictureUrl;
   const username = account.username;
-  const defaultProfileUrl = "../assets/images/default-profile-img.jpg";
 
   return (
     <aside
@@ -52,7 +52,7 @@ const DashboardSidebar = ({ account, isSidebarCollapsed }) => {
             ></img>
           ) : (
             <img
-              src={defaultProfileUrl}
+              src={defaultProfileImage}
               alt="Default profile picture"
               className="profile-picture"
             ></img>
