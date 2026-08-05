@@ -10,12 +10,8 @@ import Budgets from "./components/budgets/Budgets";
 import Goals from "./components/goals/Goals";
 import Groups from "./components/groups/Groups";
 import Settings from "./components/settings/Settings";
+import NotFound from "./NotFound";
 
-// TODO: Add more imports from other components
-
-// TODO: Add public routes for homepage, login, registration
-// TODO: Add protected routes for a dashboard layout that has main page,
-// transactions, budgets, goals, and settings
 const routes = [
   // Public routes
   {
@@ -64,15 +60,19 @@ const routes = [
             path: "/groups",
             element: <Groups />,
           },
-
-          {
-            path: "/settings",
-            element: <Settings />,
-          },
         ],
+      },
+      {
+        path: "/settings",
+        element: <Settings />,
       },
     ],
   },
+  {
+    path: "*",
+    element: <NotFound />
+
+  }
 ];
 
 export default routes;
