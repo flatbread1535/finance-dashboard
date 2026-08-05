@@ -1,0 +1,22 @@
+.dashboard {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  margin: 2rem;
+  gap: 2rem;
+  box-sizing: border-box;
+  height: calc(100vh - 8rem);
+}
+
+@media (max-width: 900px) {
+  .dashboard {
+    grid-template-columns: 1fr;
+    height: auto;
+    overflow-y: auto;
+  }
+
+  .dashboard-charts {
+    grid-column: 1 / 2;
+    width: 100%;
+    justify-self: center;
+  }
+}

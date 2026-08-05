@@ -1,0 +1,47 @@
+.dashboard-charts {
+  grid-column: 2 / 3;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: space-between;
+  min-width: 0;
+  min-height: 0;
+  position: relative;
+  height: 100%;
+  width: 100%;
+  gap: 1rem;
+}
+
+.chart-title-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+  min-height: 0;
+}
+
+.chart-title-container h2 {
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+  font-family:
+    "Index",
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    "Helvetica Neue",
+    Arial,
+    sans-serif;
+  font-size: 2rem;
+  font-weight: bold;
+  color: var(--slate-blue-theme);
+  text-align: center;
+}
+
+.chart-container {
+  position: relative;
+  flex: 1;
+  width: 100%;
+  min-height: 0;
+  justify-content: flex-start;
+}

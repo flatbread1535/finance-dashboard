@@ -1,0 +1,93 @@
+.dashboard-summary {
+  box-sizing: border-box;
+  height: 100%;
+  font-family:
+    "Index",
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    "Helvetica Neue",
+    Arial,
+    sans-serif;
+  grid-column: 1 / 2;
+  display: grid;
+  gap: 1rem;
+  grid-template-rows: auto 3fr 1fr;
+  min-height: 0;
+}
+
+.dashboard-summary h2 {
+  margin: 0;
+  font-size: 2rem;
+  color: var(--slate-blue-theme);
+  text-align: center;
+}
+
+.card-container {
+  grid-row: 2 / 3;
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  min-height: 0;
+}
+
+.card {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 0.5rem;
+  background-color: var(--gray-theme);
+  border: 2px solid var(--slate-blue-theme);
+  border-radius: 32px;
+  min-height: 0;
+}
+
+.card p {
+  margin: 0.25rem 0;
+  color: var(--slate-blue-theme);
+  font-weight: bold;
+  text-align: center;
+}
+
+.card-title {
+  font-size: 1.5rem;
+}
+
+.card-value {
+  font-size: 2rem;
+}
+
+.bottom-info {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border: 2px solid var(--slate-blue-theme);
+  border-radius: 32px;
+  background-color: var(--gray-theme);
+  min-height: 0;
+  overflow: hidden;
+}
+
+.bottom-info-piece {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  padding: 1rem 2rem;
+  color: var(--slate-blue-theme);
+  font-weight: bold;
+}
+
+.bottom-info-piece h3 {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.bottom-info-piece p {
+  margin: 0;
+  font-size: 2rem;
+}
