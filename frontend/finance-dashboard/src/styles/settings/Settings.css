@@ -1,0 +1,88 @@
+/* Overall settings container */
+.settings {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  min-height: 100vh;
+}
+
+/* Go back button and container */
+.back-btn-container {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 2rem 0 0 2rem;
+}
+
+.back-btn-container button {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background-color: var(--white);
+    border: none;
+    color: var(--slate-blue-theme);
+    font-weight: bold;
+    font-size: 2rem;
+    padding: 1.5rem 3rem;
+    border-radius: 32px;
+    cursor: pointer;
+}
+
+.back-btn-container button svg {
+  fill: var(--slate-blue-theme);
+  height: 4rem;
+  width: 4rem;
+}
+
+.back-btn-container button:hover {
+    background-color: var(--gray-theme);
+}
+
+/* Logout area of page */
+.logout-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Logout container */
+.logout-container div {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+  border: 2px solid var(--slate-blue-theme);
+  border-radius: 32px;
+  padding: 4rem 8rem;
+  background-color: var(--gray-theme);
+}
+
+.logout-container div p {
+  font-family:
+    "Index",
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    "Helvetica Neue",
+    Arial,
+    sans-serif;
+  color: var(--slate-blue-theme);
+  font-weight: bold;
+  font-size: 2rem;
+}
+
+.logout-container div button {
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: var(--white);
+  font-weight: bold;
+  padding: 1.5rem 3rem;
+  background-color: var(--delete-red);
+  border-radius: 32px;
+}
+
+.logout-container div button:hover {
+  background-color: var(--delete-red-hover);
+}
