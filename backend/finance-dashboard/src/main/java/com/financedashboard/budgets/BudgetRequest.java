@@ -10,7 +10,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 /**
- * Data transfer object representing a request to create a new request.
+ * Data transfer object representing a request to create a new budget.
  *
  * @param name the name of the budget
  * @param category the category of the budget
