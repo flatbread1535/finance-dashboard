@@ -1,3 +1,4 @@
+/* Dashboard summary section */
 .dashboard-summary {
   box-sizing: border-box;
   font-family:
@@ -16,6 +17,7 @@
   min-height: 0;
 }
 
+/* Summary title */
 .dashboard-summary h2 {
   margin: 0;
   font-size: 2rem;
@@ -23,6 +25,7 @@
   text-align: center;
 }
 
+/* Cards */
 .card-container {
   grid-row: 2 / 3;
   display: grid;
@@ -60,6 +63,7 @@
   font-size: 2rem;
 }
 
+/* Bottom summary information */
 .bottom-info {
   box-sizing: border-box;
   display: flex;

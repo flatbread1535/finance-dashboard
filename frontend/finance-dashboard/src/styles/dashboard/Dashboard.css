@@ -1,3 +1,4 @@
+/* Main dashboard  */
 .dashboard {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -7,6 +8,7 @@
   height: calc(100vh - 8rem);
 }
 
+/* Handles dashboard on smaller windows */
 @media (max-width: 900px) {
   .dashboard {
     grid-template-columns: 1fr;
