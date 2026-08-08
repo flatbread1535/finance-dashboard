@@ -126,7 +126,7 @@
     		<artifactId>jjwt-jackson</artifactId>
     		<version>0.13.0</version>
     		<scope>runtime</scope>
-		</dependency>	
+		</dependency>
 
 		<dependency>
     		<groupId>org.springframework.boot</groupId>
@@ -141,7 +141,22 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
+			<plugin>
+  				<groupId>org.apache.maven.plugins</groupId>
+  				<artifactId>maven-checkstyle-plugin</artifactId>
+  				<version>3.6.0</version>
+  				<executions>
+    				<execution>
+      				<id>checkstyle</id>
+      				<phase>verify</phase>
+      				<goals><goal>check</goal></goals>
+      				<configuration>
+        				<configLocation>checkstyle.xml</configLocation>
+        				<failOnViolation>true</failOnViolation>
+      				</configuration>
+    				</execution>
+  				</executions>
+			</plugin>
 		</plugins>
 	</build>
-
 </project>
