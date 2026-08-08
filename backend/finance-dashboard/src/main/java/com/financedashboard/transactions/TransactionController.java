@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * A REST controller exposing CRUD endpoints for user transactions.
+ * A REST controller exposing CRUD endpoints for transactions.
  */
 @RestController
 @RequestMapping("/transactions")
