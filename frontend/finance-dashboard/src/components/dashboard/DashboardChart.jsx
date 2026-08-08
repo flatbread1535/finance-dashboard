@@ -62,7 +62,7 @@ const CategoryPieChart = ({ title, transactions, matchesAmount }) => {
         {labels.length > 0 ? (
           <Pie data={data} options={options} />
         ) : (
-          <div>No transaction activity yet.</div>
+          <div className="no-activity">No transaction activity yet.</div>
         )}
       </div>
     </div>

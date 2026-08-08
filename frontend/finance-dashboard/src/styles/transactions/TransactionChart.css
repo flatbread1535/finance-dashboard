@@ -4,3 +4,20 @@
   width: 100%;
   box-sizing: border-box;
 }
+
+.no-activity {
+  font-family:
+    "Index",
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    "Helvetica Neue",
+    Arial,
+    sans-serif;
+  text-align: center;
+  font-weight: bold;
+  color: var(--slate-blue-theme);
+  font-size: 1rem;
+  margin-top: 0.5rem;
+}
