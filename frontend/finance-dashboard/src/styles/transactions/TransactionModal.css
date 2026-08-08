@@ -84,7 +84,7 @@
 
 /* Modal errors */
 .modal-error-msg {
-    color: var(--validation-red);
+  color: var(--validation-red);
 }
 
 /* Modal buttons */

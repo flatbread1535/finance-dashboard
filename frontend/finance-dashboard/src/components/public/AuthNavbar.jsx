@@ -7,12 +7,18 @@ const AuthNavbar = () => {
 
   return (
     <nav className="auth-navbar">
-      <Link to="/" className="home-link">Campus Spend</Link>
+      <Link to="/" className="home-link">
+        Campus Spend
+      </Link>
 
       {isHomePage && (
         <div className="auth-btns">
-          <Link to="/register" className="sign-up-btn">Sign Up</Link>
-          <Link to="/login" className="login-btn">Login</Link>
+          <Link to="/register" className="sign-up-btn">
+            Sign Up
+          </Link>
+          <Link to="/login" className="login-btn">
+            Login
+          </Link>
         </div>
       )}
     </nav>

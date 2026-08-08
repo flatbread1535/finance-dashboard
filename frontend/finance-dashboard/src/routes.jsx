@@ -70,9 +70,8 @@ const routes = [
   },
   {
     path: "*",
-    element: <NotFound />
-
-  }
+    element: <NotFound />,
+  },
 ];
 
 export default routes;

@@ -8,45 +8,31 @@ const TRANSACTION_TYPES = ["WITHDRAWAL", "DEPOSIT"];
 const CATEGORY_MAX_LENGTH = 50;
 
 const TransactionModal = ({ mode, transaction, onClose, onSuccess }) => {
-  const [formData, setFormData] = useState({
+  const initialFormData = {
     amount: transaction?.amount ? Math.abs(transaction.amount) : "",
     transactionType: transaction?.amount < 0 ? "WITHDRAWAL" : "DEPOSIT",
     status: transaction?.status ?? "PENDING",
     category: transaction?.category ?? "",
-  });
+  };
+
+  const [formData, setFormData] = useState(initialFormData);
 
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState("");
 
-  const handleChange = (event) => {
-    const { name, value } = event.target;
-
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-
-    // Clear that field's validation error as soon as the user edits it
-    setErrors((prev) => ({
-      ...prev,
-      [name]: undefined,
-    }));
+  const handleChange = ({ target: { name, value } }) => {
+    setFormData((prev) => ({ ...prev, [name]: value }));
+    setErrors((prev) => ({ ...prev, [name]: undefined }));
   };
 
   const validate = (data) => {
     const nextErrors = {};
 
-    if (
-      data.amount === "" ||
-      data.amount === null ||
-      data.amount === undefined
-    ) {
-      nextErrors.amount = "Transaction amount cannot be null.";
+    if (!data.amount) {
+      nextErrors.amount = "Transaction amount cannot be empty.";
     } else if (Number.isNaN(Number(data.amount))) {
       nextErrors.amount = "Transaction amount must be a valid number.";
-    } else if (Number(data.amount) <= 0) {
-      nextErrors.amount = "Transaction amount must be a positive number.";
     }
 
     const trimmedCategory = data.category.trim();
@@ -87,10 +73,9 @@ const TransactionModal = ({ mode, transaction, onClose, onSuccess }) => {
     const url = isEdit ? `${API_BASE}/${transaction.transactionId}` : API_BASE;
     const method = isEdit ? "PUT" : "POST";
 
+    const amountValue = Math.abs(Number(formData.amount));
     const amount =
-      formData.transactionType === "WITHDRAWAL"
-        ? -Math.abs(Number(formData.amount))
-        : Math.abs(Number(formData.amount));
+      formData.transactionType === "WITHDRAWAL" ? -amountValue : amountValue;
 
     try {
       const response = await fetch(url, {

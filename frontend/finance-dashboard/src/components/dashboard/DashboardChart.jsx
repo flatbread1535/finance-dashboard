@@ -1,5 +1,6 @@
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Pie } from "react-chartjs-2";
+
 import "../../styles/dashboard/DashboardChart.css";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
@@ -7,23 +8,30 @@ ChartJS.register(ArcElement, Tooltip, Legend);
 const getCategoryTotals = (transactions, matchesAmount) => {
   const totals = {};
 
-  transactions
-    .filter((t) => t.status !== "FAILED" && matchesAmount(Number(t.amount) || 0))
-    .forEach(({ category, amount }) => {
-      const key = category || "Uncategorized";
-      totals[key] = (totals[key] || 0) + Math.abs(Number(amount) || 0);
-    });
+  for (const transaction of transactions) {
+    const amount = Number(transaction.amount);
+
+    if (transaction.status === "FAILED" || !matchesAmount(amount)) {
+      continue;
+    }
+
+    const category = transaction.category || "Uncategorized";
+
+    totals[category] = (totals[category] || 0) + Math.abs(amount);
+  }
 
   return totals;
 };
 
-// Evenly spaced hues around the color wheel, so colors stay distinct
-// no matter how many categories there are (no repeats, no near-duplicates).
 const getColors = (count) =>
-  Array.from({ length: count }, (_, i) => `hsl(${(i * 360) / count}, 65%, 55%)`);
+  Array.from(
+    { length: count },
+    (_, i) => `hsl(${(i * 360) / count}, 65%, 55%)`,
+  );
 
 const CategoryPieChart = ({ title, transactions, matchesAmount }) => {
   const categoryTotals = getCategoryTotals(transactions, matchesAmount);
+
   const labels = Object.keys(categoryTotals);
   const values = Object.values(categoryTotals);
 
@@ -45,7 +53,13 @@ const CategoryPieChart = ({ title, transactions, matchesAmount }) => {
     plugins: {
       legend: {
         position: "bottom",
-        labels: { boxWidth: 10, boxHeight: 10, color: "#425570", padding: 8, font: { size: 8 } },
+        labels: {
+          boxWidth: 10,
+          boxHeight: 10,
+          color: "#425570",
+          padding: 8,
+          font: { size: 8 },
+        },
       },
       tooltip: {
         callbacks: {

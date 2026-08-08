@@ -1,5 +1,5 @@
 const Goals = () => {
-    return (
+  return (
     <main className="coming-soon">
       <p>Coming soon...</p>
     </main>

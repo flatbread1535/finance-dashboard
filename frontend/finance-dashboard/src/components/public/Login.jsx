@@ -16,7 +16,6 @@ const Login = () => {
   const validateFormData = (formData) => {
     const errors = {};
 
-    // Username validation
     if (!formData.username.trim()) {
       errors.username = "Username cannot be blank.";
     } else if (formData.username.length < 5) {
@@ -25,7 +24,6 @@ const Login = () => {
       errors.username = "Username cannot be more than 20 characters.";
     }
 
-    // Password validation
     if (!formData.password) {
       errors.password = "Password cannot be blank.";
     } else if (formData.password.length < 8) {
@@ -101,15 +99,11 @@ const Login = () => {
   return (
     <main className="login-page">
       <form noValidate onSubmit={handleSubmit}>
-        {/* TODO: Think of application name and maybe add slogan, information, or images */}
-        {/* TODO: Add media query to split sign in form into two windows (form + graphic/animation)
-         for larger windows */}
         <div className="login-top">
           <h1>Sign In</h1>
         </div>
 
         <div className="input-container">
-          {/* Username input field */}
           <div className="form-group">
             <label htmlFor="username">Your username</label>
             <input
@@ -125,7 +119,6 @@ const Login = () => {
             <ValidationMessage message={errors.username} />
           </div>
 
-          {/* Password input field */}
           <div className="form-group">
             <label htmlFor="password">Your Password</label>
             <input
@@ -146,7 +139,6 @@ const Login = () => {
           </div>
 
           <div className="submission login">
-            {/* Display error message for submission issues */}
             {submitError && (
               <div className="submit-error" role="alert">
                 {submitError}

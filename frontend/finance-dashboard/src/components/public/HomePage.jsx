@@ -8,7 +8,7 @@ const HomePage = () => {
       <section className="info">
         <p>A personal finance dashboard to manage college expenses</p>
         <ul>
-          <li>Gives important sumaries</li>
+          <li>Gives important summaries</li>
           <li>Displays interactive charts</li>
           <li>Tracks your transactions</li>
         </ul>

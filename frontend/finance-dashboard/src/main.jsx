@@ -4,13 +4,10 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./index.css";
 import routes from "./routes.jsx";
 
-// Creates the configuration for a router by passing arguments in the form of
-// an array of routes
 const router = createBrowserRouter(routes);
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    {/* Configuration is rendered in by passing it to the RouterProvider component */}
     <RouterProvider router={router} />
   </StrictMode>,
 );

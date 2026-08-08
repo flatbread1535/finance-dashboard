@@ -14,17 +14,17 @@
 }
 
 .back-btn-container button {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    background-color: var(--white);
-    border: none;
-    color: var(--slate-blue-theme);
-    font-weight: bold;
-    font-size: 2rem;
-    padding: 1.5rem 3rem;
-    border-radius: 32px;
-    cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: var(--white);
+  border: none;
+  color: var(--slate-blue-theme);
+  font-weight: bold;
+  font-size: 2rem;
+  padding: 1.5rem 3rem;
+  border-radius: 32px;
+  cursor: pointer;
 }
 
 .back-btn-container button svg {
@@ -34,7 +34,7 @@
 }
 
 .back-btn-container button:hover {
-    background-color: var(--gray-theme);
+  background-color: var(--gray-theme);
 }
 
 /* Logout area of page */

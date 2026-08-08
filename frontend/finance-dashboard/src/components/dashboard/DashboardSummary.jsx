@@ -7,29 +7,39 @@ const formatCurrency = (amount) =>
   }).format(amount);
 
 const getMetrics = (transactions) => {
-  const successful = transactions.filter((t) => t.status !== "FAILED");
+  const successful = transactions.filter(
+    (transaction) => transaction.status !== "FAILED",
+  );
+
   const failedCount = transactions.length - successful.length;
 
   let income = 0;
   let expenses = 0;
   const categoryTotals = {};
 
-  successful.forEach(({ amount, category }) => {
-    const value = Number(amount) || 0;
+  for (const transaction of successful) {
+    const amount = Number(transaction.amount);
+    const category = transaction.category || "Uncategorized";
 
-    if (value > 0) {
-      income += value;
+    if (amount > 0) {
+      income += amount;
     } else {
-      expenses += Math.abs(value);
+      expenses += Math.abs(amount);
     }
 
-    const key = category || "Uncategorized";
-    categoryTotals[key] = (categoryTotals[key] || 0) + Math.abs(value);
-  });
+    categoryTotals[category] =
+      (categoryTotals[category] || 0) + Math.abs(amount);
+  }
 
-  const [topCategory, topCategoryValue] = Object.entries(categoryTotals).sort(
-    (a, b) => b[1] - a[1],
-  )[0] || ["No activity yet", 0];
+  let topCategory = "No activity yet";
+  let topCategoryValue = 0;
+
+  for (const [category, total] of Object.entries(categoryTotals)) {
+    if (total > topCategoryValue) {
+      topCategory = category;
+      topCategoryValue = total;
+    }
+  }
 
   return {
     income,
@@ -76,7 +86,9 @@ const DashboardSummary = ({ transactions = [] }) => {
       <div className="bottom-info">
         <div className="bottom-info-piece">
           <h3>Top category:</h3>
-          <p>{topCategory} ({formatCurrency(topCategoryValue)})</p>
+          <p>
+            {topCategory} ({formatCurrency(topCategoryValue)})
+          </p>
         </div>
         <div className="bottom-info-piece">
           <h3>Failed transactions:</h3>
