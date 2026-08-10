@@ -32,7 +32,7 @@ services:
       DB_USERNAME: ${DB_USERNAME}
       DB_PASSWORD: ${DB_PASSWORD}
       JWT_SECRET: ${JWT_SECRET}
-      DB_HOST: postgres-db
+      DB_HOST: ${DB_HOST}
     ports:
       - "8080:8080"
 
