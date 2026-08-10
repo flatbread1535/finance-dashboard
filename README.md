@@ -11,10 +11,15 @@ This project was made with the intention of learning full-stack architecture, mo
 ## Screenshots
 
 ![Dashboard view](./screenshots/dashboard.png)
+<br>
 ![Transactions view](./screenshots/transactions.png)
+<br>
 ![Home view](./screenshots/home.png)
+<br>
 ![Register view](./screenshots/register.png)
+<br>
 ![Login view](./screenshots/login.png)
+<br>
 ![Logout view](./screenshots/logout.png)
 
 ---
@@ -71,6 +76,6 @@ The application's frontend, backend, and database are deployed independently.
 ---
 
 ## Credits
-SVGs: https://pictogrammers.com/library/mdi/
-Default pfp: https://www.pinterest.com/pin/213428469837729307/
-Font: https://fonts.google.com/specimen/Inter
+- SVGs: https://pictogrammers.com/library/mdi/
+- Default pfp: https://www.pinterest.com/pin/213428469837729307/
+- Font: https://fonts.google.com/specimen/Inter
