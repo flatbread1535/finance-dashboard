@@ -64,7 +64,7 @@ const Register = () => {
 
     try {
       const response = await fetch(
-        "http://localhost:8080/authentication/register",
+        `${import.meta.env.VITE_API_URL}/authentication/register`,
         {
           method: "POST",
           headers: {

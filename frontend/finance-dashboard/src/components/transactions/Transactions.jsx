@@ -27,7 +27,7 @@ const Transactions = () => {
       }
 
       try {
-        const response = await fetch("http://localhost:8080/transactions", {
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/transactions`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -66,7 +66,7 @@ const Transactions = () => {
     }
 
     try {
-      const response = await fetch("http://localhost:8080/transactions", {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/transactions`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

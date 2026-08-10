@@ -20,7 +20,7 @@ const DashboardLayout = () => {
           return;
         }
 
-        const response = await fetch("http://localhost:8080/accounts/me", {
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/accounts/me`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },

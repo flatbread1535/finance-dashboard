@@ -2,7 +2,7 @@ import { useState } from "react";
 import ValidationMessage from "../../ValidationMessage";
 import "../../styles/transactions/TransactionModal.css";
 
-const API_BASE = "http://localhost:8080/transactions";
+const API_BASE = `${import.meta.env.VITE_API_URL}/transactions`;
 const STATUSES = ["PENDING", "COMPLETED", "FAILED"];
 const TRANSACTION_TYPES = ["WITHDRAWAL", "DEPOSIT"];
 const CATEGORY_MAX_LENGTH = 50;

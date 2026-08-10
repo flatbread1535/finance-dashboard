@@ -56,7 +56,7 @@ const Login = () => {
 
     try {
       const response = await fetch(
-        "http://localhost:8080/authentication/login",
+        `${import.meta.env.VITE_API_URL}/authentication/login`,
         {
           method: "POST",
           headers: {
