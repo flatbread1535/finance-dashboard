@@ -10,16 +10,22 @@ This project was made with the intention of learning full-stack architecture, mo
 
 ## Screenshots
 
+### Dashboard
 ![Dashboard view](./screenshots/dashboard.png)
-<br>
+
+### Transactions
 ![Transactions view](./screenshots/transactions.png)
-<br>
+
+### Home
 ![Home view](./screenshots/home.png)
-<br>
+
+### Register
 ![Register view](./screenshots/register.png)
-<br>
+
+### Login
 ![Login view](./screenshots/login.png)
-<br>
+
+### Logout
 ![Logout view](./screenshots/logout.png)
 
 ---
